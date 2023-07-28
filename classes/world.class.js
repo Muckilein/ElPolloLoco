@@ -30,6 +30,7 @@ class World {
         this.addImageToMap(this.character);
         this.addArrayToMap(this.level.enemies);
         this.addArrayToMap(this.level.clouds);
+        this.addImageToMap(this.level.endboss);
         this.ctx.translate(-1 * this.camera_x, 0);
 
 
