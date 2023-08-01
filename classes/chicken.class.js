@@ -9,16 +9,14 @@ class Chicken extends MoveableObject {
         this.speed = 0.15 + Math.random() * 0.25;
         this.height = Math.round(this.width);
         this.y = 450 - this.height;
-        this.animate();
+        //this.animate();
         this.chicken_sound.volume = 0.1;
 
     }
     animate() {
         this.moveLeft();
         setInterval(() => {
-            this.img = this.imageCache[this.currentImage];
-            this.currentImage++;
-            this.currentImage = this.currentImage % this.images.length;
+            this.playAnimation(this.images.length,0);
             //this.chicken_sound.play();
 
         }, 100);

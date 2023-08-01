@@ -22,7 +22,7 @@ function init() {
 window.addEventListener('keydown', (event) => {
 
     let key = event['keyCode'];
-    console.log(key);
+  
     if (key == 39) {
         keyboard.RIGHT = true;
     }
@@ -35,15 +35,16 @@ window.addEventListener('keydown', (event) => {
     if (key == 40) {
         keyboard.DOWN = true;
     }
-    if (key == 42) {
+    if (key == 32) {
         keyboard.SPACE = true;
     }
+    
 
 });
 window.addEventListener('keyup', (event) => {
 
     let key = event['keyCode'];
-    console.log(key);
+   
     if (key == 39) {
         keyboard.RIGHT = false;
     }
@@ -56,7 +57,7 @@ window.addEventListener('keyup', (event) => {
     if (key == 40) {
         keyboard.DOWN = false;
     }
-    if (key == 42) {
+    if (key == 32) {
         keyboard.SPACE = false;
     }
 
