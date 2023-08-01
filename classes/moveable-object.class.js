@@ -43,8 +43,18 @@ class MoveableObject {
         }, 1000 / 60);
     }
 
+    draw(ctx) {
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
 
-
+    drawFrame(ctx) {
+        if (this instanceof Charakter || this instanceof Chicken) {
+            ctx.beginPath();
+            ctx.lineWidth = "1";
+            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        } 
+    }
     applyGravity() {
 
     }

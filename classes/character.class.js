@@ -13,9 +13,10 @@ class Charakter extends MoveableObject {
     currentImage = 0;
     world;
     walking_sound = new Audio('../audio/walkOnGrass.mp3');
-    isJumping = false;
     jumpNumber = 0;
     fallNumber = 6;
+    startJump = 1;
+
 
     constructor() {
         super().loadImage('../img/2_character_pepe/1_idle/idle/I-1.png');
@@ -34,10 +35,15 @@ class Charakter extends MoveableObject {
 
     }
 
-    jumpCalculations() {
-        this.y -= this.speedY;
-        this.speedY -= this.accleration;
-        this.speedY = Math.max(this.speedY, 0);
+    jumpCalculations(s) {
+        if (s == this.startJump) {
+            this.y -= this.speedY;
+            this.speedY -= this.accleration;
+            this.speedY = Math.max(this.speedY, 0);
+        }else{
+            this.y--;
+        }
+        this.startJump = s;
     }
     jumptAnimation() {
         if (this.jumpNumber < 2) {
@@ -54,7 +60,7 @@ class Charakter extends MoveableObject {
         setInterval(() => {
 
             if (this.speedY > 0 && (this.world.keyboard.SPACE || this.isAboveGround())) {
-                this.jumpCalculations();
+                this.jumpCalculations(0);
                 this.jumptAnimation();
             }
             if (this.speedY == 0) {
@@ -64,13 +70,13 @@ class Charakter extends MoveableObject {
         }, 125);
     }
 
-    gravityCalculation(){
+    gravityCalculation() {
         this.y -= this.speedY;
+        this.y= Math.min(160,this.y);
         this.speedY -= this.accleration;
     }
 
-    gravityFallAnimation()
-    {
+    gravityFallAnimation() {
         if (this.speedY < -15) {
             this.playAnimation(1, 11);
         }
@@ -79,7 +85,7 @@ class Charakter extends MoveableObject {
         }
     }
 
-    gravityLandingAnimation(){
+    gravityLandingAnimation() {
         if (this.fallNumber <= 3) {
 
             this.playAnimation(1, 13);
@@ -94,9 +100,9 @@ class Charakter extends MoveableObject {
     applyGravity() {
         setInterval(() => {
 
-            if (this.isAboveGround() && (this.speedY > -1*this.maxSpeed-10) && (this.speedY <= 0)) {
+            if (this.isAboveGround() && (this.speedY > -1 * this.maxSpeed - 10) && (this.speedY <= 0)) {
                 this.gravityCalculation();
-                this.gravityFallAnimation();               
+                this.gravityFallAnimation();
                 this.fallNumber = 0;
             }
             if (!this.isAboveGround() && this.fallNumber < 6 && !(this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
@@ -104,6 +110,7 @@ class Charakter extends MoveableObject {
             }
             if (!this.isAboveGround()) {
                 this.speedY = this.maxSpeed;
+                this.startJump = 1;
             }
 
 

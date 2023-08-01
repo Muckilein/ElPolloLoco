@@ -47,17 +47,29 @@ class World {
         });
     }
 
-    addImageToMap(elem) {
-        if (elem.otherDirection) {
-            this.ctx.save();
-            this.ctx.translate(elem.width, 0);
-            elem.x = elem.x * -1;
-            this.ctx.scale(-1, 1);
+    addImageToMap(mo) {
+        if (mo.otherDirection) {
+            this.flipImage(mo);
         }
-        this.ctx.drawImage(elem.img, elem.x, elem.y, elem.width, elem.height);
-        if (elem.otherDirection) {
-            this.ctx.restore();
-            elem.x = elem.x * -1;
+
+        mo.draw(this.ctx);
+        mo.drawFrame(this.ctx);
+
+        if (mo.otherDirection) {
+            this.flipImageBack(mo);
         }
     }
+
+    flipImage(mo) {
+        this.ctx.save();
+        this.ctx.translate(mo.width, 0);
+        mo.x = mo.x * -1;
+        this.ctx.scale(-1, 1);
+    }
+
+    flipImageBack(mo) {
+        this.ctx.restore();
+        mo.x = mo.x * -1;
+    }
 }
+
