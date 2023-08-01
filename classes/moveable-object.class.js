@@ -8,9 +8,10 @@ class MoveableObject {
     currentImage = 0;
     speed = 0.15;
     otherDirection = false;
-    speedY = 20;
-    accleration = 1;
+    speedY = 40;
+    accleration = 3;
     addOld = 0;
+    maxSpeed = 30;
 
 
 
@@ -49,10 +50,9 @@ class MoveableObject {
     }
 
     playAnimation(len, add) {
-        //if ((this.currentImage + add) >= this.imageCache.length) { this.currentImage = 0; }
+
         if (this.addOld != add) {
             this.currentImage = 0;
-            console.log('change');
         }
         this.addOld = add;
         this.img = this.imageCache[this.currentImage + add];

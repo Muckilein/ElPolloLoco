@@ -32,29 +32,30 @@ class Charakter extends MoveableObject {
         this.applyGravity();
         this.jump();
 
+    }
 
+    jumpCalculations() {
+        this.y -= this.speedY;
+        this.speedY -= this.accleration;
+        this.speedY = Math.max(this.speedY, 0);
+    }
+    jumptAnimation() {
+        if (this.jumpNumber < 2) {
+            this.playAnimation(1, 8);//abheben
+            this.jumpNumber++;
 
+        }
+        else {
+            this.playAnimation(1, 9);
+        }
     }
 
     jump() {
         setInterval(() => {
 
             if (this.speedY > 0 && (this.world.keyboard.SPACE || this.isAboveGround())) {
-
-                this.y -= this.speedY;
-                this.speedY -= this.accleration;
-                this.speedY = Math.max(this.speedY, 0);
-
-                console.log('jump');
-                if (this.jumpNumber < 2) {
-                    this.playAnimation(1, 8);//abheben
-                    this.jumpNumber++;
-                    console.log('jumpnumber' + this.jumpNumber);
-                }
-                else {
-                    console.log('play 9');
-                    this.playAnimation(1, 9);
-                }
+                this.jumpCalculations();
+                this.jumptAnimation();
             }
             if (this.speedY == 0) {
                 this.jumpNumber = 0;
@@ -63,37 +64,46 @@ class Charakter extends MoveableObject {
         }, 125);
     }
 
+    gravityCalculation(){
+        this.y -= this.speedY;
+        this.speedY -= this.accleration;
+    }
+
+    gravityFallAnimation()
+    {
+        if (this.speedY < -15) {
+            this.playAnimation(1, 11);
+        }
+        else {
+            this.playAnimation(1, 12);
+        }
+    }
+
+    gravityLandingAnimation(){
+        if (this.fallNumber <= 3) {
+
+            this.playAnimation(1, 13);
+            this.fallNumber++;
+        } else {
+
+            this.playAnimation(1, 14);
+            this.fallNumber++;
+        }
+    }
+
     applyGravity() {
         setInterval(() => {
 
-            if (this.isAboveGround() && (this.speedY > -30)&&(this.speedY <=0)) {
-               
-                this.y -= this.speedY;
-                this.speedY -= this.accleration;
-                if (this.speedY < -10) {
-                    this.playAnimation(1, 11);
-                }
-                else {
-                    this.playAnimation(1, 12);
-                }
+            if (this.isAboveGround() && (this.speedY > -1*this.maxSpeed-10) && (this.speedY <= 0)) {
+                this.gravityCalculation();
+                this.gravityFallAnimation();               
                 this.fallNumber = 0;
             }
             if (!this.isAboveGround() && this.fallNumber < 6 && !(this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
-
-
-                if (this.fallNumber <= 3) {
-
-                    this.playAnimation(1, 13);
-                    this.fallNumber++;
-                } else {
-
-                    this.playAnimation(1, 14);
-                    this.fallNumber++;
-                }
-
+                this.gravityLandingAnimation();
             }
             if (!this.isAboveGround()) {
-                this.speedY = 20;
+                this.speedY = this.maxSpeed;
             }
 
 
