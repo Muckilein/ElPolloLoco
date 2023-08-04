@@ -9,19 +9,25 @@ class Charakter extends MoveableObject {
         '../img/2_character_pepe/3_jump/J-36.png',
         '../img/2_character_pepe/3_jump/J-37.png',
         '../img/2_character_pepe/3_jump/J-38.png',
-        '../img/2_character_pepe/3_jump/J-39.png']
+        '../img/2_character_pepe/3_jump/J-39.png'];
+    images_hurt = ['../img/2_character_pepe/4_hurt/H-41.png', '../img/2_character_pepe/4_hurt/H-42.png', '../img/2_character_pepe/4_hurt/H-43.png']
+    images_death = ['../img/2_character_pepe/5_dead/D-51.png', '../img/2_character_pepe/5_dead/D-52.png', '../img/2_character_pepe/5_dead/D-53.png', '../img/2_character_pepe/5_dead/D-54.png', '../img/2_character_pepe/5_dead/D-55.png', '../img/2_character_pepe/5_dead/D-56.png', '../img/2_character_pepe/5_dead/D-57.png'];
     currentImage = 0;
     world;
     walking_sound = new Audio('../audio/walkOnGrass.mp3');
     jumpNumber = 0;
     fallNumber = 6;
     startJump = 1;
+    getHurt = false;
+    playDeath = 7;
 
 
     constructor() {
         super().loadImage('../img/2_character_pepe/1_idle/idle/I-1.png');
         this.loadImages(this.images_walking);
         this.loadImages(this.images_jumping);
+        this.loadImages(this.images_hurt);
+        this.loadImages(this.images_death);
         this.width = 150;
         this.height = this.width * 2;
         // this.y = 460 - this.height;
@@ -35,23 +41,26 @@ class Charakter extends MoveableObject {
 
     }
 
-    jumpCalculations(s) {
-        if (s == this.startJump) {
+    jumpCalculations() {
+        // startjump = 1 if we are startting the jump
+        if (0 == this.startJump) {
             this.y -= this.speedY;
             this.speedY -= this.accleration;
             this.speedY = Math.max(this.speedY, 0);
-        }else{
+        } else {
             this.y--;
         }
-        this.startJump = s;
+        // now he is jumping
+        this.startJump = 0;
     }
     jumptAnimation() {
         if (this.jumpNumber < 2) {
-            this.playAnimation(1, 8);//abheben
+            //is playing the kickoff the ground animation 
+            this.playAnimation(1, 8);
             this.jumpNumber++;
-
         }
         else {
+            // is playing the flying animation
             this.playAnimation(1, 9);
         }
     }
@@ -60,7 +69,7 @@ class Charakter extends MoveableObject {
         setInterval(() => {
 
             if (this.speedY > 0 && (this.world.keyboard.SPACE || this.isAboveGround())) {
-                this.jumpCalculations(0);
+                this.jumpCalculations();
                 this.jumptAnimation();
             }
             if (this.speedY == 0) {
@@ -72,7 +81,7 @@ class Charakter extends MoveableObject {
 
     gravityCalculation() {
         this.y -= this.speedY;
-        this.y= Math.min(160,this.y);
+        this.y = Math.min(160, this.y);
         this.speedY -= this.accleration;
     }
 
@@ -109,7 +118,7 @@ class Charakter extends MoveableObject {
                 this.gravityLandingAnimation();
             }
             if (!this.isAboveGround()) {
-                this.speedY = this.maxSpeed;
+                this.speedY = this.maxSpeed;                
                 this.startJump = 1;
             }
 
@@ -117,9 +126,17 @@ class Charakter extends MoveableObject {
         }, 1000 / 25);
     }
 
+    hit() {
+        this.energy -= 2;
+        if (this.energy <= 0) {
+            this.energy = 0;
+        }
+        if(!this.isDeath())
+        {this.playAnimation(1, 15);}
+    }
+
     animate() {
         setInterval(() => {
-
             this.moveRight();
             this.moveLeft();
             if (!keyboard.RIGHT && !keyboard.LEFT) {
@@ -129,14 +146,32 @@ class Charakter extends MoveableObject {
 
         }, 1000 / 60);
 
+        //graphics walk
         setInterval(() => {
-            if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround()) {
-                this.playAnimation(this.images_walking.length, 0);
+            //is death
+            if (this.isDeath()) {
+                if (this.playDeath >0) {
+                    this.playAnimation(7, 18);
+                    this.playDeath--;
+                }
             } else {
-                if (!this.isAboveGround() && this.fallNumber >= 6) {
-                    this.playAnimation(1, 14);
+                console.log('other');
+                if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround() && !this.getHurt) {
+                    //simple walking
+                    this.playAnimation(this.images_walking.length, 0);
+                } else {
+                    if (this.getHurt) {
+                        //painfull face
+                        this.playAnimation(3, 15);
+                    } else {
+                        if (!this.isAboveGround() && this.fallNumber >= 6) {
+                            //idls standing
+                            this.playAnimation(1, 14);
+                        }
+                    }
                 }
             }
+
         }, 50);
     }
 
@@ -156,7 +191,9 @@ class Charakter extends MoveableObject {
         }
     }
 
-
+    isDeath() {
+        return this.energy <= 0;
+    }
 
 
 }

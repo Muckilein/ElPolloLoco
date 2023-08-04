@@ -14,6 +14,7 @@ class World {
         this.draw();
         this.keyboard = keyboard;
         this.setWorld();
+        this.checkCollisions();
     }
 
     setWorld() {
@@ -71,5 +72,22 @@ class World {
         this.ctx.restore();
         mo.x = mo.x * -1;
     }
+
+    checkCollisions() {
+        setInterval(() => {
+            let pain = false;
+            this.level.enemies.forEach((enemy) => {
+                if (this.character.isColliding(enemy)) {
+                    console.log('collision with Character', this.character.energy);
+                    this.character.hit();
+                    pain = true                   
+                }
+            });
+            this.character.getHurt = pain;
+        }, 1000);
+    }
+
+
+
 }
 
