@@ -12,6 +12,9 @@ class Charakter extends MoveableObject {
         '../img/2_character_pepe/3_jump/J-39.png'];
     images_hurt = ['../img/2_character_pepe/4_hurt/H-41.png', '../img/2_character_pepe/4_hurt/H-42.png', '../img/2_character_pepe/4_hurt/H-43.png']
     images_death = ['../img/2_character_pepe/5_dead/D-51.png', '../img/2_character_pepe/5_dead/D-52.png', '../img/2_character_pepe/5_dead/D-53.png', '../img/2_character_pepe/5_dead/D-54.png', '../img/2_character_pepe/5_dead/D-55.png', '../img/2_character_pepe/5_dead/D-56.png', '../img/2_character_pepe/5_dead/D-57.png'];
+    images_idle = ['../img/2_character_pepe/1_idle/idle/I-1.png', '../img/2_character_pepe/1_idle/idle/I-2.png', '../img/2_character_pepe/1_idle/idle/I-3.png',
+        '../img/2_character_pepe/1_idle/idle/I-4.png', '../img/2_character_pepe/1_idle/idle/I-5.png', '../img/2_character_pepe/1_idle/idle/I-6.png',
+        '../img/2_character_pepe/1_idle/idle/I-7.png', '../img/2_character_pepe/1_idle/idle/I-8.png', '../img/2_character_pepe/1_idle/idle/I-9.png', '../img/2_character_pepe/1_idle/idle/I-10.png'];
     currentImage = 0;
     world;
     walking_sound = new Audio('../audio/walkOnGrass.mp3');
@@ -20,6 +23,8 @@ class Charakter extends MoveableObject {
     startJump = 1;
     getHurt = false;
     playDeath = 7;
+    idleSlowAnimation = 0;      //supportiv variable for slowing down the idle animation
+    amountBottles = 0;
 
 
     constructor() {
@@ -28,10 +33,12 @@ class Charakter extends MoveableObject {
         this.loadImages(this.images_jumping);
         this.loadImages(this.images_hurt);
         this.loadImages(this.images_death);
+        this.loadImages(this.images_idle);
         this.width = 150;
         this.height = this.width * 2;
         // this.y = 460 - this.height;
         this.y = 160;
+        // this.x = 70;
         this.x = 70;
         this.walking_sound.volume = 0.1;
 
@@ -81,10 +88,13 @@ class Charakter extends MoveableObject {
 
     gravityCalculation() {
         this.y -= this.speedY;
-        this.y = Math.min(160, this.y);
+        this.y = Math.min(460 - this.height, this.y);
         this.speedY -= this.accleration;
     }
 
+    /**
+     * Plays two different falling animations
+     */
     gravityFallAnimation() {
         if (this.speedY < -15) {
             this.playAnimation(1, 11);
@@ -94,6 +104,9 @@ class Charakter extends MoveableObject {
         }
     }
 
+    /**
+    * Plays two different laning animations
+    */
     gravityLandingAnimation() {
         if (this.fallNumber <= 3) {
 
@@ -108,17 +121,19 @@ class Charakter extends MoveableObject {
 
     applyGravity() {
         setInterval(() => {
-
-            if (this.isAboveGround() && (this.speedY > -1 * this.maxSpeed - 10) && (this.speedY <= 0)) {
+            //when he is in the air
+            if (this.isAboveGround() && (this.speedY <= 0)) {
                 this.gravityCalculation();
                 this.gravityFallAnimation();
                 this.fallNumber = 0;
             }
+            //when he reached the ground
             if (!this.isAboveGround() && this.fallNumber < 6 && !(this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
                 this.gravityLandingAnimation();
             }
+            // after the complete landing process is completed
             if (!this.isAboveGround()) {
-                this.speedY = this.maxSpeed;                
+                this.speedY = this.maxSpeed;
                 this.startJump = 1;
             }
 
@@ -131,8 +146,7 @@ class Charakter extends MoveableObject {
         if (this.energy <= 0) {
             this.energy = 0;
         }
-        if(!this.isDeath())
-        {this.playAnimation(1, 15);}
+        if (!this.isDeath()) { this.playAnimation(1, 15); }
     }
 
     animate() {
@@ -143,19 +157,25 @@ class Charakter extends MoveableObject {
                 // this.walking_sound.pause();
             }
             this.world.camera_x = -1 * this.x + 100;
+            //statuspar moves with the camera
+            this.world.statusbar.x = this.x - 50;
+            this.world.bottlebar.x = this.x - 50;
+            this.world.bossbar.x = this.x + 350;
 
         }, 1000 / 60);
 
         //graphics walk
         setInterval(() => {
+
             //is death
             if (this.isDeath()) {
-                if (this.playDeath >0) {
+                if (this.playDeath > 0) {
                     this.playAnimation(7, 18);
                     this.playDeath--;
                 }
             } else {
-                console.log('other');
+
+
                 if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround() && !this.getHurt) {
                     //simple walking
                     this.playAnimation(this.images_walking.length, 0);
@@ -166,13 +186,22 @@ class Charakter extends MoveableObject {
                     } else {
                         if (!this.isAboveGround() && this.fallNumber >= 6) {
                             //idls standing
-                            this.playAnimation(1, 14);
+                            this.slowedDownIdleAnimation();
+
                         }
                     }
                 }
             }
 
-        }, 50);
+        }, 100);
+    }
+
+    slowedDownIdleAnimation() {
+        if (this.idleSlowAnimation == 0) {
+            this.playAnimation(10, 25);
+        }
+        this.idleSlowAnimation++;
+        this.idleSlowAnimation = this.idleSlowAnimation % 3;
     }
 
     moveRight() {
