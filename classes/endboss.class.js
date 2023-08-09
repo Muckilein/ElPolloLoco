@@ -8,13 +8,19 @@ class Endboss extends MoveableObject {
         '../img/4_enemie_boss_chicken/2_alert/G11.png',
         '../img/4_enemie_boss_chicken/2_alert/G12.png'
     ];
-   
+    image_dead = ['../img/4_enemie_boss_chicken/5_dead/G24.png', '../img/4_enemie_boss_chicken/5_dead/G25.png', '../img/4_enemie_boss_chicken/5_dead/G26.png',
+        '../img/2_character_pepe/5_dead/D-57.png'];
+    images_getHurt = ['../img/4_enemie_boss_chicken/4_hurt/G21.png','../img/4_enemie_boss_chicken/4_hurt/G22.png','../img/4_enemie_boss_chicken/4_hurt/G23.png'];
+
     standardPos;
+    deadAnimationCounter = 4;
 
 
     constructor(x) {
         super().loadImage('../img/4_enemie_boss_chicken/1_walk/G1.png');
         this.loadImages(this.images);
+        this.loadImages(this.images_getHurt);
+        this.loadImages(this.image_dead);
         this.x = x;
         this.standardPos = x;
         this.width = 300;
@@ -25,14 +31,32 @@ class Endboss extends MoveableObject {
         this.otherDirection = false;
     }
 
+
+
     animate() {
-        setInterval(() => {
-            // this.moveRight();
-            // this.moveLeft();
-        }, 1000 / 60);
+        // setInterval(() => {
+        //     // this.moveRight();
+        //     // this.moveLeft();
+        // }, 1000 / 60);
 
         setInterval(() => {
-            this.playAnimation(this.images.length,0);
+            if (this.energy > 0) {
+                if (this.getHurt) {
+                    this.playAnimation(this.images_getHurt.length, 8);
+                }
+                else {
+                    this.playAnimation(this.images.length, 0);
+                }
+
+            }
+            else {
+                if (this.deadAnimationCounter > 0) {
+                    this.playAnimation(this.image_dead.length, 11);
+                    console.log(this.deadAnimationCounter);
+                    this.deadAnimationCounter--;
+
+                }
+            }
         }, 500);
     }
 
@@ -41,7 +65,7 @@ class Endboss extends MoveableObject {
             this.x -= this.speed;
         }
         else {
-            this.otherDirection = true ;
+            this.otherDirection = true;
         }
     }
 

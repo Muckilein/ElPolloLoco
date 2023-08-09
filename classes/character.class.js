@@ -20,11 +20,11 @@ class Charakter extends MoveableObject {
     walking_sound = new Audio('../audio/walkOnGrass.mp3');
     jumpNumber = 0;
     fallNumber = 6;
-    startJump = 1;
-    getHurt = false;
+    startJump = 1;    
     playDeath = 7;
     idleSlowAnimation = 0;      //supportiv variable for slowing down the idle animation
     amountBottles = 0;
+    amountCoins = 0;
 
 
     constructor() {
@@ -161,6 +161,7 @@ class Charakter extends MoveableObject {
             this.world.statusbar.x = this.x - 50;
             this.world.bottlebar.x = this.x - 50;
             this.world.bossbar.x = this.x + 350;
+            this.world.coinbar.x = this.x + 350;
 
         }, 1000 / 60);
 

@@ -8,6 +8,7 @@ class MoveableObject extends DrawableObject {
     offsetY = 0;
     energy = 100;
     otherDirection=false;
+    getHurt = false;
 
 
     isColliding(mo) {
