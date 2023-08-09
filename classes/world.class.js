@@ -167,13 +167,13 @@ class World {
 
             } else { en.push(enemy); }
         });
-        if (bottle.isColliding(this.level.endboss)) {
+        if (bottle.isColliding(this.level.endboss) && this.level.endboss.energy > 0) {
             console.log('collision with Boss');
             this.level.endboss.energy -= 30
             this.level.endboss.energy = Math.max(this.level.endboss.energy, 0);
             this.level.endboss.getHurt = true;
-            setTimeout(this.notHurt.bind(this),1000);
-            console.log('energy',this.level.endboss.energy);
+            setTimeout(this.notHurt.bind(this), 1000);
+            console.log('energy', this.level.endboss.energy);
             if (this.level.endboss.energy > 0) { this.bossbar.nextIndex(); } //up to change
             col = true;
         }
@@ -181,14 +181,14 @@ class World {
         return col;
     }
 
-    notHurt(){
+    notHurt() {
         this.level.endboss.getHurt = false;
     }
 
     checkCollisions() {
         let pain = false;
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy) || this.character.isColliding(this.level.endboss)) {
+            if (this.character.isColliding(enemy) || (this.character.isColliding(this.level.endboss) && this.level.endboss.energy > 0)) {
                 console.log('collision with Character', this.character.energy);
                 this.character.hit();
                 this.statusbar.setPercentage(this.character.energy);
