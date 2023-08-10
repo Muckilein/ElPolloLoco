@@ -22,9 +22,7 @@ class StatusBar extends DrawableObject {
 
     setPercentage(percentage) {
         this.percentage = percentage;
-        let index = Math.floor(this.percentage / 20);
-        console.log('percentage', this.percentage);
-        console.log('index', index);
+        let index = Math.floor(this.percentage / 20);       
         this.img = this.imageCache[index];
 
     }

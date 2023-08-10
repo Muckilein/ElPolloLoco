@@ -14,13 +14,13 @@ class Chicken extends MoveableObject {
 
     }
     animate() {
+
         this.moveLeft();
         setInterval(() => {
-            this.playAnimation(this.images.length,0);
-            //this.chicken_sound.play();
-
+            if (this.startGame) {
+                this.playAnimation(this.images.length, 0);
+                //this.chicken_sound.play();
+            }
         }, 100);
-
     }
-
 }

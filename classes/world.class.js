@@ -14,16 +14,32 @@ class World {
     canvas;
     keyboard;
     camera_x = -100;
+    gameWin = false;
+    startScreen;
 
 
 
-    constructor(canvas, keyboard) {
+    constructor(startScreen,canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
+        this.startScreen=startScreen;
         this.draw();
         this.keyboard = keyboard;
         this.setWorld();
         this.run();
+    }
+    startGame() {
+        this.level.endboss.setChar(this.character);
+        this.character.startG();
+        this.level.enemies.forEach(e => { e.startG() });
+        this.level.endboss.startG();
+        this.level.clouds.forEach(c => { c.startG() });
+    }
+    endGame() {
+        this.character.endG();
+        this.level.enemies.forEach(e => { e.endG() });
+        this.level.endboss.endG();
+        this.level.clouds.forEach(c => { c.endG() });
     }
 
     setWorld() {
@@ -104,15 +120,27 @@ class World {
 
     run() {
         setInterval(() => {
-            this.checkCollisions();
-            this.throwObjects();
-            this.collectingBottles();
-            this.collectCoins();
-            this.bottleCollisionAndRemove();
-            this.coins.forEach(c => {
-                c.playAnimation(2, 0);
-            });
-
+            if (!this.gameWin) {
+                this.checkCollisions();
+                this.throwObjects();
+                this.collectingBottles();
+                this.collectCoins();
+                this.bottleCollisionAndRemove();
+                this.coins.forEach(c => {
+                    c.playAnimation(2, 0);
+                });
+                if (this.level.endboss.x - this.character.x < 350) {
+                    console.log('start fight');
+                    this.level.endboss.startFight = true;
+                }
+                if (this.level.endboss.deadAnimationCounter == 0) {
+                    this.gameWin = true;
+                    this.endGame();
+                }
+            }else{
+                this.startScreen.classList.remove('d-none');
+                this.canvas.classList.add('d-none');
+            }
         }, 125);
     }
 
@@ -169,7 +197,7 @@ class World {
         });
         if (bottle.isColliding(this.level.endboss) && this.level.endboss.energy > 0) {
             console.log('collision with Boss');
-            this.level.endboss.energy -= 30
+            this.level.endboss.energy -= 35;
             this.level.endboss.energy = Math.max(this.level.endboss.energy, 0);
             this.level.endboss.getHurt = true;
             setTimeout(this.notHurt.bind(this), 1000);

@@ -7,6 +7,7 @@ let level1 = new Level([new Chicken(), new Chicken(), new Chicken()], [new Cloud
  bgLevel1(); 
 
 function bgLevel1() {
+    console.log('bgLevel1');
     for (let i = 0; i < 5; i = i + 2) {
         level1.background.push(new Background('../img/5_background/layers/air.png', 0 + i * 719));
         level1.background.push(new Background('../img/5_background/layers/3_third_layer/1.png', 0 + i * 719));

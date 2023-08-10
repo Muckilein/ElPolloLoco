@@ -7,8 +7,9 @@ class MoveableObject extends DrawableObject {
     maxSpeed = 30;
     offsetY = 0;
     energy = 100;
-    otherDirection=false;
+    otherDirection = false;
     getHurt = false;
+    startGame = false;
 
 
     isColliding(mo) {
@@ -22,23 +23,24 @@ class MoveableObject extends DrawableObject {
 
     isAboveGround() {
         // return this.y < 160;
-        if( this instanceof ThrowableObject) {return true;}
-       else  return (this.y + this.height) < 460;
+        if (this instanceof ThrowableObject) { return true; }
+        else return (this.y + this.height) < 460;
     }
 
 
     applyGravity() {
-        setInterval(() => {        
-            
+        setInterval(() => {
+
             if (this.isAboveGround() && (this.speedY <= 0)) {
 
                 this.y -= this.speedY;
-                if(!( this instanceof ThrowableObject)) {
-                this.y = Math.min(460-this.height, this.y);}
+                if (!(this instanceof ThrowableObject)) {
+                    this.y = Math.min(460 - this.height, this.y);
+                }
                 this.speedY -= this.accleration;
-               
+
             }
-           
+
         }, 1000 / 25);
     }
 
@@ -48,9 +50,16 @@ class MoveableObject extends DrawableObject {
     moveLeft() {
 
         setInterval(() => {
-            this.x = this.x - this.speed;
+            if (this.startGame) { this.x = this.x - this.speed; }
 
         }, 1000 / 60);
+    }
+
+    startG() {
+        this.startGame = true;
+    }
+    endG() {
+        this.startGame = false;
     }
 
 

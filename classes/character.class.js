@@ -20,7 +20,7 @@ class Charakter extends MoveableObject {
     walking_sound = new Audio('../audio/walkOnGrass.mp3');
     jumpNumber = 0;
     fallNumber = 6;
-    startJump = 1;    
+    startJump = 1;
     playDeath = 7;
     idleSlowAnimation = 0;      //supportiv variable for slowing down the idle animation
     amountBottles = 0;
@@ -74,15 +74,15 @@ class Charakter extends MoveableObject {
 
     jump() {
         setInterval(() => {
-
-            if (this.speedY > 0 && (this.world.keyboard.SPACE || this.isAboveGround())) {
-                this.jumpCalculations();
-                this.jumptAnimation();
+            if (this.startGame) {
+                if (this.speedY > 0 && (this.world.keyboard.SPACE || this.isAboveGround())) {
+                    this.jumpCalculations();
+                    this.jumptAnimation();
+                }
+                if (this.speedY == 0) {
+                    this.jumpNumber = 0;
+                }
             }
-            if (this.speedY == 0) {
-                this.jumpNumber = 0;
-            }
-
         }, 125);
     }
 
@@ -121,23 +121,24 @@ class Charakter extends MoveableObject {
 
     applyGravity() {
         setInterval(() => {
-            //when he is in the air
-            if (this.isAboveGround() && (this.speedY <= 0)) {
-                this.gravityCalculation();
-                this.gravityFallAnimation();
-                this.fallNumber = 0;
-            }
-            //when he reached the ground
-            if (!this.isAboveGround() && this.fallNumber < 6 && !(this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
-                this.gravityLandingAnimation();
-            }
-            // after the complete landing process is completed
-            if (!this.isAboveGround()) {
-                this.speedY = this.maxSpeed;
-                this.startJump = 1;
-            }
+            if (this.startGame) {
+                //when he is in the air
+                if (this.isAboveGround() && (this.speedY <= 0)) {
+                    this.gravityCalculation();
+                    this.gravityFallAnimation();
+                    this.fallNumber = 0;
+                }
+                //when he reached the ground
+                if (!this.isAboveGround() && this.fallNumber < 6 && !(this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
+                    this.gravityLandingAnimation();
+                }
+                // after the complete landing process is completed
+                if (!this.isAboveGround()) {
+                    this.speedY = this.maxSpeed;
+                    this.startJump = 1;
+                }
 
-
+            }
         }, 1000 / 25);
     }
 
@@ -150,50 +151,52 @@ class Charakter extends MoveableObject {
     }
 
     animate() {
-        setInterval(() => {
-            this.moveRight();
-            this.moveLeft();
-            if (!keyboard.RIGHT && !keyboard.LEFT) {
-                // this.walking_sound.pause();
-            }
-            this.world.camera_x = -1 * this.x + 100;
-            //statuspar moves with the camera
-            this.world.statusbar.x = this.x - 50;
-            this.world.bottlebar.x = this.x - 50;
-            this.world.bossbar.x = this.x + 350;
-            this.world.coinbar.x = this.x + 350;
 
+        setInterval(() => {
+            if (this.startGame) {
+                this.moveRight();
+                this.moveLeft();
+                if (!keyboard.RIGHT && !keyboard.LEFT) {
+                    // this.walking_sound.pause();
+                }
+                this.world.camera_x = -1 * this.x + 100;
+                //statuspar moves with the camera
+                this.world.statusbar.x = this.x - 50;
+                this.world.bottlebar.x = this.x - 50;
+                this.world.bossbar.x = this.x + 350;
+                this.world.coinbar.x = this.x + 350;
+            }
         }, 1000 / 60);
 
         //graphics walk
         setInterval(() => {
-
-            //is death
-            if (this.isDeath()) {
-                if (this.playDeath > 0) {
-                    this.playAnimation(7, 18);
-                    this.playDeath--;
-                }
-            } else {
-
-
-                if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround() && !this.getHurt) {
-                    //simple walking
-                    this.playAnimation(this.images_walking.length, 0);
+            if (this.startGame) {
+                //is death
+                if (this.isDeath()) {
+                    if (this.playDeath > 0) {
+                        this.playAnimation(7, 18);
+                        this.playDeath--;
+                    }
                 } else {
-                    if (this.getHurt) {
-                        //painfull face
-                        this.playAnimation(3, 15);
-                    } else {
-                        if (!this.isAboveGround() && this.fallNumber >= 6) {
-                            //idls standing
-                            this.slowedDownIdleAnimation();
 
+
+                    if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround() && !this.getHurt) {
+                        //simple walking
+                        this.playAnimation(this.images_walking.length, 0);
+                    } else {
+                        if (this.getHurt) {
+                            //painfull face
+                            this.playAnimation(3, 15);
+                        } else {
+                            if (!this.isAboveGround() && this.fallNumber >= 6) {
+                                //idls standing
+                                this.slowedDownIdleAnimation();
+
+                            }
                         }
                     }
                 }
             }
-
         }, 100);
     }
 

@@ -3,10 +3,14 @@ let world;
 let keyboard = new Keyboard();
 
 function init() {
-
+    console.log('call init');
     canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard);
+    startScreen = document.getElementById('startScreen')
+    startScreen.classList.add('d-none');
+    world = new World(startScreen,canvas, keyboard);
+    canvas.classList.remove('d-none');
 
+    world.startGame();
     console.log(world.character);
     canvas.addEventListener("click", function (e) {
         let cRect = canvas.getBoundingClientRect();        // Gets CSS pos, and width/height
@@ -22,7 +26,7 @@ function init() {
 window.addEventListener('keydown', (event) => {
 
     let key = event['keyCode'];
-  
+
     if (key == 39) {
         keyboard.RIGHT = true;
     }
@@ -42,13 +46,13 @@ window.addEventListener('keydown', (event) => {
         keyboard.D = true;
     }
     // console.log(key);
-    
+
 
 });
 window.addEventListener('keyup', (event) => {
 
     let key = event['keyCode'];
-   
+
     if (key == 39) {
         keyboard.RIGHT = false;
     }

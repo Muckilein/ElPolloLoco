@@ -8,53 +8,71 @@ class Endboss extends MoveableObject {
         '../img/4_enemie_boss_chicken/2_alert/G11.png',
         '../img/4_enemie_boss_chicken/2_alert/G12.png'
     ];
+    ALERT = 0;
+    DEAD = 8;
+    HURT = 12;
+    ATTACK = 15;
     image_dead = ['../img/4_enemie_boss_chicken/5_dead/G24.png', '../img/4_enemie_boss_chicken/5_dead/G25.png', '../img/4_enemie_boss_chicken/5_dead/G26.png',
         '../img/2_character_pepe/5_dead/D-57.png'];
-    images_getHurt = ['../img/4_enemie_boss_chicken/4_hurt/G21.png','../img/4_enemie_boss_chicken/4_hurt/G22.png','../img/4_enemie_boss_chicken/4_hurt/G23.png'];
-
+    images_getHurt = ['../img/4_enemie_boss_chicken/4_hurt/G21.png', '../img/4_enemie_boss_chicken/4_hurt/G22.png', '../img/4_enemie_boss_chicken/4_hurt/G23.png'];
+    image_attack = ['../img/4_enemie_boss_chicken/3_attack/G13.png', '../img/4_enemie_boss_chicken/3_attack/G14.png'
+        , '../img/4_enemie_boss_chicken/3_attack/G15.png', '../img/4_enemie_boss_chicken/3_attack/G16.png', '../img/4_enemie_boss_chicken/3_attack/G17.png',
+        '../img/4_enemie_boss_chicken/3_attack/G18.png', '../img/4_enemie_boss_chicken/3_attack/G19.png', '../img/4_enemie_boss_chicken/3_attack/G20.png'];
     standardPos;
     deadAnimationCounter = 4;
+    startFight = false;
+    character;
 
 
     constructor(x) {
+        console.log('call consructor Boss');
         super().loadImage('../img/4_enemie_boss_chicken/1_walk/G1.png');
         this.loadImages(this.images);
-        this.loadImages(this.images_getHurt);
         this.loadImages(this.image_dead);
+        this.loadImages(this.images_getHurt);
+        this.loadImages(this.image_attack);
+
         this.x = x;
         this.standardPos = x;
         this.width = 300;
         this.height = Math.round(this.width * 1.16);
         this.y = 450 - this.height;
         this.animate();
-        this.speed = 0.75;
+        this.speed = 5;
         this.otherDirection = false;
     }
 
 
 
     animate() {
-        // setInterval(() => {
-        //     // this.moveRight();
-        //     // this.moveLeft();
-        // }, 1000 / 60);
 
         setInterval(() => {
-            if (this.energy > 0) {
-                if (this.getHurt) {
-                    this.playAnimation(this.images_getHurt.length, 8);
+            if (this.startGame) {
+                if (this.energy > 0) {
+
+                    if (this.getHurt) {
+                        this.viewToChar();
+                        this.playAnimation(this.images_getHurt.length, this.HURT);
+
+                    }
+                    else {
+                        if (this.startFight) {
+                            this.viewToChar();                            
+                            this.playAnimation(this.image_attack.length, this.ATTACK);
+                        }
+                        else {
+                            this.playAnimation(this.images.length, this.ALERT);
+                            this.moveRight();
+                            this.moveLeft();
+                        }
+                    }
+
                 }
                 else {
-                    this.playAnimation(this.images.length, 0);
-                }
-
-            }
-            else {
-                if (this.deadAnimationCounter > 0) {
-                    this.playAnimation(this.image_dead.length, 11);
-                    console.log(this.deadAnimationCounter);
-                    this.deadAnimationCounter--;
-
+                    if (this.deadAnimationCounter > 0) {
+                        this.playAnimation(this.image_dead.length, this.DEAD);
+                        this.deadAnimationCounter--;
+                    }
                 }
             }
         }, 500);
@@ -63,9 +81,25 @@ class Endboss extends MoveableObject {
     moveRight() {
         if (!this.otherDirection && this.x > this.standardPos - 100) {
             this.x -= this.speed;
+
         }
         else {
             this.otherDirection = true;
+
+        }
+    }
+
+    setChar(char) {
+        this.character = char;
+    }
+
+    viewToChar() {
+        if (this.character.x < this.x) {
+            this.otherDirection = false;
+            this.x -=30;
+        } else {
+            this.otherDirection = true;
+            this.x +=30;
         }
     }
 
