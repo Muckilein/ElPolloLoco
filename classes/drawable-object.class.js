@@ -1,4 +1,4 @@
-class DrawableObject{
+class DrawableObject {
     x = 120;
     y = 200;
     width = 120;
@@ -8,9 +8,15 @@ class DrawableObject{
     currentImage = 0;
     otherDirection = false;
     
-  loadImage(path) {
+
+    loadImage(path) {
         this.img = new Image();
         this.img.src = path;
+    }
+
+    initDrawableObjects() {
+        this.currentImage = 0;
+        this.otherDirection = false;
     }
 
     loadImages(arr) {

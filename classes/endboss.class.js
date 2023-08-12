@@ -19,8 +19,8 @@ class Endboss extends MoveableObject {
         , '../img/4_enemie_boss_chicken/3_attack/G15.png', '../img/4_enemie_boss_chicken/3_attack/G16.png', '../img/4_enemie_boss_chicken/3_attack/G17.png',
         '../img/4_enemie_boss_chicken/3_attack/G18.png', '../img/4_enemie_boss_chicken/3_attack/G19.png', '../img/4_enemie_boss_chicken/3_attack/G20.png'];
     standardPos;
-    deadAnimationCounter = 4;
-    startFight = false;
+    deadAnimationCounter;
+    startFight;
     character;
 
 
@@ -31,23 +31,24 @@ class Endboss extends MoveableObject {
         this.loadImages(this.image_dead);
         this.loadImages(this.images_getHurt);
         this.loadImages(this.image_attack);
-
+        this.deadAnimationCounter = 4;
+        this.startFight = false;
         this.x = x;
         this.standardPos = x;
         this.width = 300;
         this.height = Math.round(this.width * 1.16);
-        this.y = 450 - this.height;
-        this.animate();
+        this.y = 450 - this.height;       
         this.speed = 5;
         this.otherDirection = false;
+        this.initMoveableObjects();
     }
 
 
 
     animate() {
 
-        setInterval(() => {
-            if (this.startGame) {
+        let interv = setInterval(() => {
+          
                 if (this.energy > 0) {
 
                     if (this.getHurt) {
@@ -57,7 +58,7 @@ class Endboss extends MoveableObject {
                     }
                     else {
                         if (this.startFight) {
-                            this.viewToChar();                            
+                            this.viewToChar();
                             this.playAnimation(this.image_attack.length, this.ATTACK);
                         }
                         else {
@@ -74,8 +75,9 @@ class Endboss extends MoveableObject {
                         this.deadAnimationCounter--;
                     }
                 }
-            }
-        }, 500);
+            
+        }, 125);
+        this.intervalls.push(interv);
     }
 
     moveRight() {
@@ -93,13 +95,19 @@ class Endboss extends MoveableObject {
         this.character = char;
     }
 
+    getDistance() {
+        return Math.abs(this.character.x - this.x);
+    }
+
+
     viewToChar() {
-        if (this.character.x < this.x) {
+        if (this.character.x < this.x && this.getDistance() >50) {
             this.otherDirection = false;
-            this.x -=30;
-        } else {
+            this.x -= 20;
+        }  
+        if (this.character.x > this.x && this.getDistance() >50) {
             this.otherDirection = true;
-            this.x +=30;
+            this.x += 20;
         }
     }
 

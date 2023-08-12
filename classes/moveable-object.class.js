@@ -7,9 +7,15 @@ class MoveableObject extends DrawableObject {
     maxSpeed = 30;
     offsetY = 0;
     energy = 100;
-    otherDirection = false;
-    getHurt = false;
-    startGame = false;
+    //otherDirection = false;
+    getHurt = false;   
+    intervalls=[0];
+
+    initMoveableObjects() {
+        this.initDrawableObjects();
+        this.getHurt = false;
+        this.energy = 100;       
+    }
 
 
     isColliding(mo) {
@@ -49,22 +55,12 @@ class MoveableObject extends DrawableObject {
     }
     moveLeft() {
 
-        setInterval(() => {
-            if (this.startGame) { this.x = this.x - this.speed; }
+        let interv= setInterval(() => {
+           this.x = this.x - this.speed; 
 
         }, 1000 / 60);
+        this.intervalls.push(interv);
     }
-
-    startG() {
-        this.startGame = true;
-    }
-    endG() {
-        this.startGame = false;
-    }
-
-
-
-
 
     playAnimation(len, add) {
 

@@ -1,45 +1,71 @@
 class World {
 
-    character = new Charakter();
+    //intervalls = [0];
     level = level1;
-    statusbar = new StatusBar(15, 0, this.level.statusBarImages, 100);
-    bottlebar = new StatusBar(15, 60, this.level.bottleBarImages, 0);
-    bossbar = new StatusBar(400, 0, this.level.bossBarImages, 0);
-    coinbar = new StatusBar(400, 60, this.level.coinBarImages, 0);
-    coins = [new Coin(450, 480), new Coin(550, 480), new Coin(950, 480), new Coin(1300, 480)];
+    statusbar = this.level.statusbar;
+    bottlebar = this.level.bottlebar;
+    bossbar = this.level.bossbar;
+    coinbar = this.level.coinbar;    
     bottles = [];
-    bottlesInWorld = [new ThrowableObject(900, 450), new ThrowableObject(1000, 450), new ThrowableObject(1200, 450), new ThrowableObject(1400, 450)
-        , new ThrowableObject(1600, 450), new ThrowableObject(1800, 450), new ThrowableObject(2000, 450)];
+    bottlesInWorld = this.level.bottles;
     ctx;
     canvas;
     keyboard;
     camera_x = -100;
     gameWin = false;
     startScreen;
+    gameOver;
+    character = new Charakter();
+    firstGame = true;
+    gamestarted = false;
 
 
-
-    constructor(startScreen,canvas, keyboard) {
+    constructor(gameOver, startScreen, canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
-        this.startScreen=startScreen;
-        this.draw();
+        this.startScreen = startScreen;
+        this.gameOver = gameOver;
         this.keyboard = keyboard;
+        this.draw();
         this.setWorld();
         this.run();
+
     }
+
+    clearAllIntervalls(intervall) {
+        console.log('clearAllInfervalls ', intervall);
+        for (let i = 1; i < intervall.length; i++) {
+            clearInterval(intervall[i]);
+            // console.log('close ' + intervall[i]);
+        }
+        let interv = [0];
+        return interv;
+
+    }
+
     startGame() {
+        this.statusbar.setPercentage(100);
+        this.bossbar.setPercentage(0);
+        this.bottlebar.setPercentage(0);       
+        this.coinbar.setPercentage(0);  
+        this.gamestarted = true;
+        this.camera_x = -100;
+        this.gameWin = false;
+        console.log('startGame()');
+        this.character = new Charakter();
+        this.setWorld();
+        this.bottlesInWorld = this.level.bottles;
         this.level.endboss.setChar(this.character);
-        this.character.startG();
-        this.level.enemies.forEach(e => { e.startG() });
-        this.level.endboss.startG();
-        this.level.clouds.forEach(c => { c.startG() });
+        this.character.startAnimations();       
+        this.level.enemies.forEach(e => { e.animate() });
+        this.level.endboss.animate();
+        this.level.clouds.forEach(c => { c.animate() });
     }
     endGame() {
-        this.character.endG();
-        this.level.enemies.forEach(e => { e.endG() });
-        this.level.endboss.endG();
-        this.level.clouds.forEach(c => { c.endG() });
+        this.character.intervalls = this.clearAllIntervalls(this.character.intervalls); 
+        this.level.enemies.forEach(e => { e.intervalls = this.clearAllIntervalls(e.intervalls) });
+        this.level.endboss.intervalls = this.clearAllIntervalls(this.level.endboss.intervalls);
+        this.level.clouds.forEach(c => {  c.intervalls = this.clearAllIntervalls(c.intervalls) });
     }
 
     setWorld() {
@@ -58,7 +84,7 @@ class World {
         this.addImageToMap(this.level.endboss);
         this.addArrayToMap(this.bottles);
         this.addArrayToMap(this.bottlesInWorld);
-        this.addArrayToMap(this.coins);
+        this.addArrayToMap(this.level.coins);
         this.addImageToMap(this.character);
         this.addImageToMap(this.statusbar);
         this.addImageToMap(this.bossbar);
@@ -120,33 +146,52 @@ class World {
 
     run() {
         setInterval(() => {
-            if (!this.gameWin) {
-                this.checkCollisions();
-                this.throwObjects();
-                this.collectingBottles();
-                this.collectCoins();
-                this.bottleCollisionAndRemove();
-                this.coins.forEach(c => {
-                    c.playAnimation(2, 0);
-                });
-                if (this.level.endboss.x - this.character.x < 350) {
-                    console.log('start fight');
-                    this.level.endboss.startFight = true;
+            if (this.gamestarted) {
+                if (!this.gameWin) {
+                    this.checkCollisions();
+                    this.throwObjects();
+                    this.collectingBottles();
+                    this.collectCoins();
+                    this.bottleCollisionAndRemove();
+                    this.level.coins.forEach(c => {
+                        c.playAnimation(2, 0);
+                    });
+                    if (this.level.endboss.x - this.character.x < 350) {
+                        console.log('start fight');
+                        this.level.endboss.startFight = true;
+                    }
+                    if (this.level.endboss.deadAnimationCounter == 0) {
+                        this.gameWin = true;
+                        this.endGame();
+                        this.gamestarted = false;
+                    }
+                    if (this.character.playDeath == 0) {
+                        this.endGame();
+                        this.gamestarted = false;
+                        this.canvas.classList.add('d-none');
+                        this.gameOver.classList.remove('d-none');
+
+                    }
                 }
-                if (this.level.endboss.deadAnimationCounter == 0) {
-                    this.gameWin = true;
-                    this.endGame();
+                if (this.gameWin) {
+                    setTimeout(this.backToScreen.bind(this), 1000);
+
                 }
-            }else{
-                this.startScreen.classList.remove('d-none');
-                this.canvas.classList.add('d-none');
             }
         }, 125);
     }
 
+    backToScreen() {
+        console.log('back to screen');
+        this.startScreen.classList.remove('d-none');
+        this.canvas.classList.add('d-none');
+        this.gameWin = false;
+    }
+
+
     collectCoins() {
         let co = [];
-        this.coins.forEach(coin => {
+        this.level.coins.forEach(coin => {
             if (this.character.isColliding(coin)) {
                 this.character.amountCoins++;
                 this.coinbar.setPercentage(this.character.amountCoins * 20);
@@ -155,7 +200,7 @@ class World {
                 co.push(coin);
             }
         });
-        this.coins = co;
+        this.level.coins = co;
     }
 
     collectingBottles() {

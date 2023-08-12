@@ -15,16 +15,17 @@ class Charakter extends MoveableObject {
     images_idle = ['../img/2_character_pepe/1_idle/idle/I-1.png', '../img/2_character_pepe/1_idle/idle/I-2.png', '../img/2_character_pepe/1_idle/idle/I-3.png',
         '../img/2_character_pepe/1_idle/idle/I-4.png', '../img/2_character_pepe/1_idle/idle/I-5.png', '../img/2_character_pepe/1_idle/idle/I-6.png',
         '../img/2_character_pepe/1_idle/idle/I-7.png', '../img/2_character_pepe/1_idle/idle/I-8.png', '../img/2_character_pepe/1_idle/idle/I-9.png', '../img/2_character_pepe/1_idle/idle/I-10.png'];
-    currentImage = 0;
     world;
     walking_sound = new Audio('../audio/walkOnGrass.mp3');
-    jumpNumber = 0;
-    fallNumber = 6;
-    startJump = 1;
-    playDeath = 7;
-    idleSlowAnimation = 0;      //supportiv variable for slowing down the idle animation
-    amountBottles = 0;
-    amountCoins = 0;
+    currentImage;
+    jumpNumber;
+    fallNumber;
+    startJump;
+    playDeath;
+    idleSlowAnimation;      //supportiv variable for slowing down the idle animation
+    amountBottles;
+    amountCoins;
+    intervalls=[0]
 
 
     constructor() {
@@ -41,11 +42,27 @@ class Charakter extends MoveableObject {
         // this.x = 70;
         this.x = 70;
         this.walking_sound.volume = 0.1;
+        this.initializeValues();
+        this.initMoveableObjects();
 
+
+    }
+
+    startAnimations() {
         this.animate();
         this.applyGravity();
         this.jump();
+    }
 
+    initializeValues() {
+        this.currentImage = 0;
+        this.jumpNumber = 0;
+        this.fallNumber = 6;
+        this.startJump = 1;
+        this.playDeath = 7;
+        this.idleSlowAnimation = 0;      //supportiv variable for slowing down the idle animation
+        this.amountBottles = 0;
+        this.amountCoins = 0;
     }
 
     jumpCalculations() {
@@ -73,8 +90,8 @@ class Charakter extends MoveableObject {
     }
 
     jump() {
-        setInterval(() => {
-            if (this.startGame) {
+        let interv= setInterval(() => {
+            
                 if (this.speedY > 0 && (this.world.keyboard.SPACE || this.isAboveGround())) {
                     this.jumpCalculations();
                     this.jumptAnimation();
@@ -82,8 +99,9 @@ class Charakter extends MoveableObject {
                 if (this.speedY == 0) {
                     this.jumpNumber = 0;
                 }
-            }
+        
         }, 125);
+        this.intervalls.push(interv);
     }
 
     gravityCalculation() {
@@ -120,8 +138,8 @@ class Charakter extends MoveableObject {
     }
 
     applyGravity() {
-        setInterval(() => {
-            if (this.startGame) {
+       let interv= setInterval(() => {
+          
                 //when he is in the air
                 if (this.isAboveGround() && (this.speedY <= 0)) {
                     this.gravityCalculation();
@@ -138,8 +156,9 @@ class Charakter extends MoveableObject {
                     this.startJump = 1;
                 }
 
-            }
+            
         }, 1000 / 25);
+        this.intervalls.push(interv);
     }
 
     hit() {
@@ -151,9 +170,8 @@ class Charakter extends MoveableObject {
     }
 
     animate() {
-
-        setInterval(() => {
-            if (this.startGame) {
+        console.log('call animate()');
+        let interv = setInterval(() => {          
                 this.moveRight();
                 this.moveLeft();
                 if (!keyboard.RIGHT && !keyboard.LEFT) {
@@ -165,12 +183,12 @@ class Charakter extends MoveableObject {
                 this.world.bottlebar.x = this.x - 50;
                 this.world.bossbar.x = this.x + 350;
                 this.world.coinbar.x = this.x + 350;
-            }
-        }, 1000 / 60);
-
+        
+        }, 1000 / 60);       
+        this.intervalls.push(interv);
         //graphics walk
-        setInterval(() => {
-            if (this.startGame) {
+        interv = setInterval(() => {
+          
                 //is death
                 if (this.isDeath()) {
                     if (this.playDeath > 0) {
@@ -196,8 +214,9 @@ class Charakter extends MoveableObject {
                         }
                     }
                 }
-            }
+            
         }, 100);
+        this.intervalls.push(interv);
     }
 
     slowedDownIdleAnimation() {

@@ -1,25 +1,31 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let first = false;
 
 function init() {
     console.log('call init');
     canvas = document.getElementById('canvas');
-    startScreen = document.getElementById('startScreen')
-    startScreen.classList.add('d-none');
-    world = new World(startScreen,canvas, keyboard);
-    canvas.classList.remove('d-none');
+    startScreen = document.getElementById('startScreen');
+    gameOver = document.getElementById('gameOverScreen');
+    if (!first) {
+        world = new World(gameOver, startScreen, canvas, keyboard);
+        canvas.addEventListener("click", function (e) {
+            let cRect = canvas.getBoundingClientRect();        // Gets CSS pos, and width/height
+            let canvasX = Math.round(e.clientX - cRect.left);  // Subtract the 'left' of the canvas 
+            let canvasY = Math.round(e.clientY - cRect.top);   // from the X/Y positions to make  
+            console.log('position x:' + canvasX + ' y: ' + canvasY);
 
+        });
+       
+    }else{
+        world.level = newLevel1();
+    }
+    startScreen.classList.add('d-none');
+    canvas.classList.remove('d-none');
+    console.log('new Char');    
     world.startGame();
-    console.log(world.character);
-    canvas.addEventListener("click", function (e) {
-        let cRect = canvas.getBoundingClientRect();        // Gets CSS pos, and width/height
-        let canvasX = Math.round(e.clientX - cRect.left);  // Subtract the 'left' of the canvas 
-        let canvasY = Math.round(e.clientY - cRect.top);   // from the X/Y positions to make  
-        console.log('position x:' + canvasX + ' y: ' + canvasY);
-        // ctx.clearRect(0, 0, canvas.width, canvas.height);  // (0,0) the top left of the canvas
-        // ctx.fillText("X: "+canvasX+", Y: "+canvasY, 10, 20);
-    });
+    first = true;
 
 }
 
