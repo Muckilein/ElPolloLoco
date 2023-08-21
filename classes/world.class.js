@@ -1,7 +1,8 @@
 class World {
 
     //intervalls = [0];
-    level = level1;
+    // level = level1;
+    level=  newLevel1();
     statusbar = this.level.statusbar;
     bottlebar = this.level.bottlebar;
     bossbar = this.level.bossbar;
@@ -62,6 +63,7 @@ class World {
         this.level.clouds.forEach(c => { c.animate() });
     }
     endGame() {
+        // this.canvas.exitFullscreen();
         this.character.intervalls = this.clearAllIntervalls(this.character.intervalls); 
         this.level.enemies.forEach(e => { e.intervalls = this.clearAllIntervalls(e.intervalls) });
         this.level.endboss.intervalls = this.clearAllIntervalls(this.level.endboss.intervalls);
@@ -112,7 +114,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+         mo.drawFrame(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo);
@@ -170,6 +172,7 @@ class World {
                         this.gamestarted = false;
                         this.canvas.classList.add('d-none');
                         this.gameOver.classList.remove('d-none');
+                        setTimeout(this.backToScreenFfromGameOver.bind(this), 3000);
 
                     }
                 }
@@ -180,6 +183,16 @@ class World {
             }
         }, 125);
     }
+
+    
+    backToScreenFfromGameOver() {
+        console.log('back to screen');
+        this.startScreen.classList.remove('d-none');
+        this.canvas.classList.add('d-none');
+        this.gameWin = false;
+        this.gameOver.classList.add('d-none');
+    }
+
 
     backToScreen() {
         console.log('back to screen');

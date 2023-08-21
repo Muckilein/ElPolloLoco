@@ -9,6 +9,9 @@ class Cloud extends MoveableObject {
       
     }
 
+    /**
+     * Clound moves left.
+     */
     animate(){        
      this.moveLeft();
        

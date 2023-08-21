@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Pollo Loco</title>
-    <link rel="stylesheet" href="style.css">    
+    <link rel="stylesheet" href="style.css">
     <script src="./classes/drawable-object.class.js"></script>
-    <script src="./classes/moveable-object.class.js"></script>   
+    <script src="./classes/moveable-object.class.js"></script>
     <script src="./classes/character.class.js"></script>
     <script src="./classes/chicken.class.js"></script>
     <script src="./classes/cloud.class.js"></script>
@@ -14,28 +15,69 @@
     <script src="./classes/keyboard.class.js"></script>
     <script src="./classes/endboss.class.js"></script>
     <script src="./classes/coins.class.js"></script>
-    <script src="./classes/level.class.js"></script>    
-    <script src="./classes/statusbar.class.js"></script> 
+    <script src="./classes/level.class.js"></script>
+    <script src="./classes/statusbar.class.js"></script>
     <script src="./classes/throwable-object.class.js"></script>
-    <script src="./levels/level1.js"></script>    
-    <script src="./classes/world.class.js"></script>   
+    <script src="./levels/level1.js"></script>
+    <script src="./classes/world.class.js"></script>
     <script src="./js/game.js"></script>
 
     <style>
-        .d-none{
-            display :none;
+        .d-none {
+            display: none;
+        }
+
+        #buttonFull {
+            background-color: orange;
+            border-radius: 15px;
+            padding: 10px 20px 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        h1 {
+            font-size: 64px;
+            text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+        }
+        .btn{
+            display:flex;
+            gap:5px;
+        }
+
+        .btnContainer{
+            display:flex;
+             justify-content:  space-between; 
+             width:720px;
+             margin-top: 10px;
+             position:absolute;
+             bottom: 0px;
         }
     </style>
 
 </head>
 <!-- <body onload="init()"> -->
-<body></body>
-    <h1>El Pollo Loco</h1>
-    <img id="startScreen"  src="img/9_intro_outro_screens/start/startscreen_1.png" width="960px" height="540px" style="cursor:pointer" onclick="init()"_>
-    <img id="gameOverScreen" class="d-none" src="img/9_intro_outro_screens/game_over/example.png" width="960px" height="540px" style="cursor:pointer">
-    <canvas id="canvas" width="720px" height="480px" class="d-none" >
 
-    </canvas>
-    
+<body></body>
+<h1>El Pollo Loco</h1>
+<img id="startScreen" src="img/9_intro_outro_screens/start/startscreen_1.png" width="960px" height="540px"
+    style="cursor:pointer" onclick="init()">
+<img id="gameOverScreen" class="d-none" src="img/9_intro_outro_screens/game_over/example.png" width="960px"
+    height="540px" style="cursor:pointer" onclick="init()">
+<canvas id="canvas" width="720px" height="480px" class="d-none">
+</canvas>
+<div class="btnContainer">
+    <div class="btn" >
+        <button id="btnL" class="btnSteuern">L</button>
+        <button id="btnR" class="btnSteuern">R</button>
+    </div>
+    <button id="buttonFull" onclick="goFullscreen()" class="">Fullscreen</button>
+   <div class="btn">
+    <button id="btnUP" class="btnSteuern">UP</button>
+    <button id="btnT" class="btnSteuern">T</button>
+   </div>
+</div>
+
+
 </body>
+
 </html>

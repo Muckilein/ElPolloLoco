@@ -13,6 +13,10 @@ class Chicken extends MoveableObject {
         this.initMoveableObjects();
 
     }
+
+    /**
+     * Animation of the Chickens. Moves only left.
+     */
     animate() {
 
         this.moveLeft();

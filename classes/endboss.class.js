@@ -8,10 +8,6 @@ class Endboss extends MoveableObject {
         '../img/4_enemie_boss_chicken/2_alert/G11.png',
         '../img/4_enemie_boss_chicken/2_alert/G12.png'
     ];
-    ALERT = 0;
-    DEAD = 8;
-    HURT = 12;
-    ATTACK = 15;
     image_dead = ['../img/4_enemie_boss_chicken/5_dead/G24.png', '../img/4_enemie_boss_chicken/5_dead/G25.png', '../img/4_enemie_boss_chicken/5_dead/G26.png',
         '../img/2_character_pepe/5_dead/D-57.png'];
     images_getHurt = ['../img/4_enemie_boss_chicken/4_hurt/G21.png', '../img/4_enemie_boss_chicken/4_hurt/G22.png', '../img/4_enemie_boss_chicken/4_hurt/G23.png'];
@@ -22,6 +18,11 @@ class Endboss extends MoveableObject {
     deadAnimationCounter;
     startFight;
     character;
+    ALERT = 0;
+    DEAD = this.images.length;
+    HURT = this.DEAD + this.image_dead.length;
+    ATTACK = this.HURT + this.images_getHurt.length;
+
 
 
     constructor(x) {
@@ -37,49 +38,55 @@ class Endboss extends MoveableObject {
         this.standardPos = x;
         this.width = 300;
         this.height = Math.round(this.width * 1.16);
-        this.y = 450 - this.height;       
+        this.y = 450 - this.height;
         this.speed = 5;
         this.otherDirection = false;
         this.initMoveableObjects();
     }
 
 
-
+ /** 
+  * Animations of the endboss depending on the state of the endboss.
+ */
     animate() {
 
         let interv = setInterval(() => {
-          
-                if (this.energy > 0) {
+            //still alive
+            if (this.energy > 0) {
 
-                    if (this.getHurt) {
-                        this.viewToChar();
-                        this.playAnimation(this.images_getHurt.length, this.HURT);
-
-                    }
-                    else {
-                        if (this.startFight) {
-                            this.viewToChar();
-                            this.playAnimation(this.image_attack.length, this.ATTACK);
-                        }
-                        else {
-                            this.playAnimation(this.images.length, this.ALERT);
-                            this.moveRight();
-                            this.moveLeft();
-                        }
-                    }
+                if (this.getHurt) {
+                    this.viewToChar();
+                    this.playAnimation(this.images_getHurt.length, this.HURT);
 
                 }
                 else {
-                    if (this.deadAnimationCounter > 0) {
-                        this.playAnimation(this.image_dead.length, this.DEAD);
-                        this.deadAnimationCounter--;
+                    if (this.startFight) {
+                        this.viewToChar();
+                        this.playAnimation(this.image_attack.length, this.ATTACK);
+                    }
+                    else {
+                        this.playAnimation(this.images.length, this.ALERT);
+                        this.moveRight();
+                        this.moveLeft();
                     }
                 }
-            
+
+            }
+            //dead animation
+            else {
+                if (this.deadAnimationCounter > 0) {
+                    this.playAnimation(this.image_dead.length, this.DEAD);
+                    this.deadAnimationCounter--;
+                }
+            }
+
         }, 125);
         this.intervalls.push(interv);
     }
 
+    /**
+     * Moves right
+     */
     moveRight() {
         if (!this.otherDirection && this.x > this.standardPos - 100) {
             this.x -= this.speed;
@@ -90,27 +97,9 @@ class Endboss extends MoveableObject {
 
         }
     }
-
-    setChar(char) {
-        this.character = char;
-    }
-
-    getDistance() {
-        return Math.abs(this.character.x - this.x);
-    }
-
-
-    viewToChar() {
-        if (this.character.x < this.x && this.getDistance() >50) {
-            this.otherDirection = false;
-            this.x -= 20;
-        }  
-        if (this.character.x > this.x && this.getDistance() >50) {
-            this.otherDirection = true;
-            this.x += 20;
-        }
-    }
-
+    /**
+     * Moves left
+     */
     moveLeft() {
         if (this.otherDirection && this.x < this.standardPos + 100) {
             this.x += this.speed;
@@ -119,5 +108,38 @@ class Endboss extends MoveableObject {
             this.otherDirection = false;
         }
     }
+
+    /**
+     * 
+     * @param {Character} char sets char as the Charakter
+     */
+    setChar(char) {
+        this.character = char;
+    }
+
+    /**     * 
+     * @returns Distance of the endboss and the charakter
+     */
+    getDistance() {
+        return Math.abs(this.character.x - this.x);
+    }
+
+
+    /**
+     * If the distance between the endboss and the charakter is smaler than 50 the endbos turns to the charakter and 
+     * attaks.
+     */
+    viewToChar() {
+        if (this.character.x < this.x && this.getDistance() > 50) {
+            this.otherDirection = false;
+            this.x -= 20;
+        }
+        if (this.character.x > this.x && this.getDistance() > 50) {
+            this.otherDirection = true;
+            this.x += 20;
+        }
+    }
+
+    
 
 }

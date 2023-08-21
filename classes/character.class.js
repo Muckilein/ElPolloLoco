@@ -25,7 +25,14 @@ class Charakter extends MoveableObject {
     idleSlowAnimation;      //supportiv variable for slowing down the idle animation
     amountBottles;
     amountCoins;
-    intervalls=[0]
+    intervalls = [0];
+    //indices at which the images for the animation are stored in the ImageCache
+    WALKING = 0;
+    JUMPING = this.images_walking.length;
+    HURT = this.JUMPING + this.images_jumping.length;
+    DEAD = this.HURT + this.images_hurt.length;
+    IDLE = this.DEAD + this.images_death.length;
+
 
 
     constructor() {
@@ -44,16 +51,29 @@ class Charakter extends MoveableObject {
         this.walking_sound.volume = 0.1;
         this.initializeValues();
         this.initMoveableObjects();
+        this.offset = {
+            top: 150,
+            bottom: 10,
+            right: 40,
+            left: 25
+        }
+
 
 
     }
 
+    /**
+     * Starts all the Animations
+     */
     startAnimations() {
         this.animate();
         this.applyGravity();
         this.jump();
     }
 
+    /**
+     * Setz all the relavant variables to specivic values. Is called when we start or restart the game.
+     */
     initializeValues() {
         this.currentImage = 0;
         this.jumpNumber = 0;
@@ -65,6 +85,9 @@ class Charakter extends MoveableObject {
         this.amountCoins = 0;
     }
 
+    /**
+     * Executes the calculations for the jumping
+     */
     jumpCalculations() {
         // startjump = 1 if we are startting the jump
         if (0 == this.startJump) {
@@ -77,6 +100,10 @@ class Charakter extends MoveableObject {
         // now he is jumping
         this.startJump = 0;
     }
+
+    /**
+     * Handels the graphics while Jumping
+     */
     jumptAnimation() {
         if (this.jumpNumber < 2) {
             //is playing the kickoff the ground animation 
@@ -88,22 +115,27 @@ class Charakter extends MoveableObject {
             this.playAnimation(1, 9);
         }
     }
-
+    /**
+     * Handles the whole jumping process.
+     */
     jump() {
-        let interv= setInterval(() => {
-            
-                if (this.speedY > 0 && (this.world.keyboard.SPACE || this.isAboveGround())) {
-                    this.jumpCalculations();
-                    this.jumptAnimation();
-                }
-                if (this.speedY == 0) {
-                    this.jumpNumber = 0;
-                }
-        
+        let interv = setInterval(() => {
+
+            if (this.speedY > 0 && (this.world.keyboard.SPACE || this.isAboveGround())) {
+                this.jumpCalculations();
+                this.jumptAnimation();
+            }
+            if (this.speedY == 0) {
+                this.jumpNumber = 0;
+            }
+
         }, 125);
         this.intervalls.push(interv);
     }
 
+    /**
+     * Handels all the calculations for the gravity (falling)
+     */
     gravityCalculation() {
         this.y -= this.speedY;
         this.y = Math.min(460 - this.height, this.y);
@@ -137,96 +169,121 @@ class Charakter extends MoveableObject {
         }
     }
 
+    /**
+     * Handels the complete gravity/Falling process.
+     */
     applyGravity() {
-       let interv= setInterval(() => {
-          
-                //when he is in the air
-                if (this.isAboveGround() && (this.speedY <= 0)) {
-                    this.gravityCalculation();
-                    this.gravityFallAnimation();
-                    this.fallNumber = 0;
-                }
-                //when he reached the ground
-                if (!this.isAboveGround() && this.fallNumber < 6 && !(this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
-                    this.gravityLandingAnimation();
-                }
-                // after the complete landing process is completed
-                if (!this.isAboveGround()) {
-                    this.speedY = this.maxSpeed;
-                    this.startJump = 1;
-                }
+        let interv = setInterval(() => {
 
-            
+            //when he is in the air
+            if (this.isAboveGround() && (this.speedY <= 0)) {
+                this.gravityCalculation();
+                this.gravityFallAnimation();
+                this.fallNumber = 0;
+            }
+            //when he reached the ground
+            if (!this.isAboveGround() && this.fallNumber < 6 && !(this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
+                this.gravityLandingAnimation();
+            }
+            // after the complete landing process is completed
+            if (!this.isAboveGround()) {
+                this.speedY = this.maxSpeed;
+                this.startJump = 1;
+            }
+
+
         }, 1000 / 25);
         this.intervalls.push(interv);
     }
-
+    /**
+     * Handels what happens, when we got hit.
+     */
     hit() {
         this.energy -= 2;
         if (this.energy <= 0) {
             this.energy = 0;
         }
-        if (!this.isDeath()) { this.playAnimation(1, 15); }
+        // if (!this.isDeath()) {
+        //     this.playAnimation(1, 15);
+        // }
+    }
+    /**
+     * Handels the moving to left and right, the camera and all the bars.
+     */
+    moveLeftRightCamera() {
+        this.moveRight();
+        this.moveLeft();
+        if (!keyboard.RIGHT && !keyboard.LEFT) {
+            // this.walking_sound.pause();
+        }
+        this.world.camera_x = -1 * this.x + 100;
+        //statusbar moves with the camera
+        this.world.statusbar.x = this.x - 50;
+        this.world.bottlebar.x = this.x - 50;
+        this.world.bossbar.x = this.x + 350;
+        this.world.coinbar.x = this.x + 350;
+    }
+    /**
+     * Handles the dead animation.
+     */
+    handleDeath() {
+        if (this.playDeath > 0) {
+            this.playAnimation(7, this.DEAD);
+            this.playDeath--;
+        }
     }
 
+    /**
+     * Calles the different animations (dead, hurt, idle, walking) , depending on the input of keys and other relevant variables.
+     */
     animate() {
         console.log('call animate()');
-        let interv = setInterval(() => {          
-                this.moveRight();
-                this.moveLeft();
-                if (!keyboard.RIGHT && !keyboard.LEFT) {
-                    // this.walking_sound.pause();
-                }
-                this.world.camera_x = -1 * this.x + 100;
-                //statuspar moves with the camera
-                this.world.statusbar.x = this.x - 50;
-                this.world.bottlebar.x = this.x - 50;
-                this.world.bossbar.x = this.x + 350;
-                this.world.coinbar.x = this.x + 350;
-        
-        }, 1000 / 60);       
+        let interv = setInterval(() => {
+            this.moveLeftRightCamera();
+
+        }, 1000 / 60);
         this.intervalls.push(interv);
         //graphics walk
         interv = setInterval(() => {
-          
-                //is death
-                if (this.isDeath()) {
-                    if (this.playDeath > 0) {
-                        this.playAnimation(7, 18);
-                        this.playDeath--;
-                    }
+            //is death
+            if (this.isDeath()) {
+                this.handleDeath();
+            } else {
+                if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround() && !this.getHurt) {
+                    //simple walking
+                    this.playAnimation(this.images_walking.length, this.WALKING);
                 } else {
-
-
-                    if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround() && !this.getHurt) {
-                        //simple walking
-                        this.playAnimation(this.images_walking.length, 0);
+                    if (this.getHurt) {
+                        //painfull face
+                        this.playAnimation(3, this.HURT);
                     } else {
-                        if (this.getHurt) {
-                            //painfull face
-                            this.playAnimation(3, 15);
-                        } else {
-                            if (!this.isAboveGround() && this.fallNumber >= 6) {
-                                //idls standing
-                                this.slowedDownIdleAnimation();
+                        if (!this.isAboveGround() && this.fallNumber >= 6) {
+                            //idls standing
+                            this.slowedDownIdleAnimation();
 
-                            }
                         }
                     }
                 }
-            
+            }
+
         }, 100);
         this.intervalls.push(interv);
     }
 
+    /**
+     * Because in animate() the different animation(death, hurt,walkin,idle) are fast (every image changes in 100 ms) the idle animation is slowerd down here,
+     * so that the image changes every 300ms.
+     */
     slowedDownIdleAnimation() {
         if (this.idleSlowAnimation == 0) {
-            this.playAnimation(10, 25);
+            this.playAnimation(10, this.IDLE);
         }
         this.idleSlowAnimation++;
         this.idleSlowAnimation = this.idleSlowAnimation % 3;
     }
-
+    /**
+     *Calculations of moving right as long as the right arrow key is pressed and we are not at the end of the level.
+     */
     moveRight() {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end) {
             this.x += 5;
@@ -234,7 +291,9 @@ class Charakter extends MoveableObject {
             //this.walking_sound.play();
         }
     }
-
+    /**
+    *Calculations of moving right as long as the right arrow key is pressed and we are not at the end of the level.
+    */
     moveLeft() {
         if (this.world.keyboard.LEFT && this.x > 0) {
             this.x -= 5;
@@ -243,6 +302,9 @@ class Charakter extends MoveableObject {
         }
     }
 
+    /**     
+     * @returns Is the Charakter dead?
+     */
     isDeath() {
         return this.energy <= 0;
     }

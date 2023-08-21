@@ -29,6 +29,6 @@ class Level {
         this.endboss = endboss;
         this.coins = coins;
         this.bottles = bottles;
-        this.charakter = new Charakter();
+        // this.charakter = new Charakter();
     }
 }
