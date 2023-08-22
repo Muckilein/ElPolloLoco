@@ -7,25 +7,28 @@ class ThrowableObject extends MoveableObject {
         this.width = 100;
         this.height = this.width;
         this.y = y - this.height;
-        this.speedY = 0;
-        // this.throw();
+        this.speedY = 0;     
 
     }
 
-
-    throw(mult) {
+/**
+ * 
+ * @param {number} direct determined in which direction the object shell be thrown.
+ */
+    throw(direct) {
         this.speedY = 30;
         this.applyGravity();
-        if (mult == -1) {
+        if (direct == -1) {
             this.x -= this.width;
         }
-        setInterval(() => {
-            this.x += 5 * mult;
+        let interv = setInterval(() => {
+            this.x += 5 * direct;
             if (this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.accleration;
             }
         }, 50);
+        this.intervalls.push(interv);
 
     }
 }

@@ -51,7 +51,7 @@ class DrawableObject {
     }
 
      /**
-     * Init when a new DrawableObject is created.
+     * Initialized the nessesara values when a new DrawableObject is created.
      */
      initDrawableObjects() {
         this.currentImage = 0;

@@ -10,42 +10,44 @@ class MoveableObject extends DrawableObject {
     //otherDirection = false;
     getHurt = false;
     intervalls = [0];
-  
 
+
+    /**
+     * Initialized the nessesara values when a new MoveableObject is created.
+     */
     initMoveableObjects() {
         this.initDrawableObjects();
         this.getHurt = false;
         this.energy = 100;
     }
 
-
-    // isColliding(mo) {
-
-    //     return (this.x + this.width > mo.x &&
-    //         this.y + this.height > mo.y &&
-    //         this.x < mo.x &&
-    //         this.y < mo.y + mo.height);
-
-    // }
-    
+    /**
+     * returns whether the character is colliding with the given MoveableObject.
+     *  
+     * @param {MoveableObject} mo  MoaveableObject 
+     * @returns                     ist the character colliding with mo
+     */
     isColliding(mo) {
-
-        return (this.x + this.width -this.offset.right> mo.x +mo.offset.left &&
-            this.y + this.height -this.offset.bottom> mo.y +mo.offset.top &&
-            this.x +this.offset.left< mo.x +mo.width -mo.offset.right &&
-            this.y +this.offset.top< mo.y + mo.height -mo.offset.bottom);
-
+        return (this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+            this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
+            this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom);
     }
-
+    /**
+     * 
+     * @returns return whether a object is on the gound or not. A Throwable object is always considers as on the ground.
+     */
     isAboveGround() {
         // return this.y < 160;
         if (this instanceof ThrowableObject) { return true; }
         else return (this.y + this.height) < 460;
     }
 
-
+    /**
+     * Applys gravity to a Moveable Object, as long a it is not overwritten in a more specific class.
+     */
     applyGravity() {
-       let interv= setInterval(() => {
+        let interv = setInterval(() => {
 
             if (this.isAboveGround() && (this.speedY <= 0)) {
 
@@ -64,6 +66,9 @@ class MoveableObject extends DrawableObject {
     moveRight() {
 
     }
+    /**
+     * Objects moves left
+     */
     moveLeft() {
 
         let interv = setInterval(() => {
@@ -72,7 +77,11 @@ class MoveableObject extends DrawableObject {
         }, 1000 / 60);
         this.intervalls.push(interv);
     }
-
+    /**
+     * 
+     * @param {number} len amout of images that are unsed for the animtion
+     * @param {number} add index where the images, that shell be used for this animation are stored in imageCache.
+     */
     playAnimation(len, add) {
 
         if (this.addOld != add) {

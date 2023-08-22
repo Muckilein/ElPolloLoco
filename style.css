@@ -11,40 +11,98 @@ body {
     align-items: center;
     background-image: url('../img/desert.png');
     background-position: center;
-    font-family: 'zabars','Raleway', sans-serif;
+    font-family: 'zabars', 'Raleway', sans-serif;
     position: relative;
-    
+
 
 }
 
-.btnSteuern{
+.d-none {
+    display: none !important;
+}
+
+.buttonSizeScreen {
     background-color: orange;
     border-radius: 15px;
-    padding: 10px 20px 10px 20px;        
+    padding: 10px 20px 10px 20px;
+    border: none;
     cursor: pointer;
 }
 
-
-
-@media only screen and (max-width: 720px){
-    canvas
-    {
-        width:100%;
-    }
+h1 {
+    font-size: 64px;
+    text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+.btn{
+    display:flex;
+    gap:5px;
 }
 
-@media only screen and (max-height: 480px){
-    canvas
-    {
-        height:100vh;
-    }
+#btnContainer{
+     display:flex;
+     justify-content:  space-between; 
+     /* width:720px; */
+     margin-top: 10px;
+     position:absolute;
+     bottom: 0px;
+     left:0;
+     right:0;
+     
 }
 
-@font-face {   
+#screen{
+    display: flex; 
+    flex-direction:column;
+    justify-content: center;
+    position: relative;
+}
 
-    font-family: 'zabars';   
-    src: url('../fonts/zabars.ttf') format('woff2');
+.btnSteuern {
+    background-color: orange;
+    border-radius: 15px;
+    padding: 10px 20px 10px 20px;
+    cursor: pointer;
+}
+
+.fullHeight{
+    height:100vh;
+}
+.fullWidth{
+    width:100%;
+}
+
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+    /* #btnContainer {
+        width: 100%;
+    } */
    
+}
+
+@media (min-width: 720px) {
+    /* #btnContainer{
+        display: none !important;;       
+    } */
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
+
+    h1{
+        display: none;
+    }
+
+}
+
+@font-face {
+
+    font-family: 'zabars';
+    src: url('../fonts/zabars.ttf') format('woff2');
+
 }
 
 /* raleway-100 - latin */

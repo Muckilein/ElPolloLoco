@@ -22,13 +22,13 @@ class Level {
     bottlebar = new StatusBar(15, 60, this.bottleBarImages, 0);
     bossbar = new StatusBar(400, 0, this.bossBarImages, 0);
     coinbar = new StatusBar(400, 60, this.coinBarImages, 0);
+
     constructor(enemies, clouds, background, endboss, coins, bottles) {
         this.enemies = enemies;
         this.clouds = clouds;
         this.background = background;
         this.endboss = endboss;
         this.coins = coins;
-        this.bottles = bottles;
-        // this.charakter = new Charakter();
+        this.bottles = bottles;        
     }
 }

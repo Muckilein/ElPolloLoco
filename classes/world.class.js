@@ -1,12 +1,10 @@
 class World {
 
-    //intervalls = [0];
-    // level = level1;
-    level=  newLevel1();
+    level = newLevel1();
     statusbar = this.level.statusbar;
     bottlebar = this.level.bottlebar;
     bossbar = this.level.bossbar;
-    coinbar = this.level.coinbar;    
+    coinbar = this.level.coinbar;
     bottles = [];
     bottlesInWorld = this.level.bottles;
     ctx;
@@ -33,6 +31,12 @@ class World {
 
     }
 
+    /**
+     * 
+     * @param {number Arrray} intervall Array with the numbers of the intervals, that shell be closen.
+     * intervall[0]=0 is not an intervalnumber
+     * @returns returns an array [0] because working with empty arrays did not work.
+     */
     clearAllIntervalls(intervall) {
         console.log('clearAllInfervalls ', intervall);
         for (let i = 1; i < intervall.length; i++) {
@@ -44,36 +48,64 @@ class World {
 
     }
 
-    startGame() {
+    // Sets all the bars to the correct start percentage(0 or 100)
+    initBars() {
         this.statusbar.setPercentage(100);
         this.bossbar.setPercentage(0);
-        this.bottlebar.setPercentage(0);       
-        this.coinbar.setPercentage(0);  
-        this.gamestarted = true;
-        this.camera_x = -100;
-        this.gameWin = false;
-        console.log('startGame()');
-        this.character = new Charakter();
-        this.setWorld();
-        this.bottlesInWorld = this.level.bottles;
-        this.level.endboss.setChar(this.character);
-        this.character.startAnimations();       
+        this.bottlebar.setPercentage(0);
+        this.coinbar.setPercentage(0);
+    }
+    /**
+     * Starts all the animations.
+     */
+    startsAllAnimation() {
+        this.character.startAnimations();
         this.level.enemies.forEach(e => { e.animate() });
         this.level.endboss.animate();
         this.level.clouds.forEach(c => { c.animate() });
     }
+    /**
+     * initializes some variables
+     */
+    initRelevantVariables() {
+        this.gamestarted = true;
+        this.camera_x = -100;
+        this.gameWin = false;
+        this.bottlesInWorld = this.level.bottles;
+        this.level.endboss.setChar(this.character);
+    }
+
+    /**
+     * Starts the game. Sets all the bars to the correct start percentage(0 or 100). Sets the value of some important variables.
+     * Starts the Animations.
+     */
+    startGame() {
+        this.initBars();
+        this.character = new Charakter();
+        this.setWorld();
+        this.initRelevantVariables();
+        this.startsAllAnimation();
+
+    }
+    /**
+     * Ends the game with closing all intervals
+     */
     endGame() {
-        // this.canvas.exitFullscreen();
-        this.character.intervalls = this.clearAllIntervalls(this.character.intervalls); 
+
+        this.character.intervalls = this.clearAllIntervalls(this.character.intervalls);
         this.level.enemies.forEach(e => { e.intervalls = this.clearAllIntervalls(e.intervalls) });
         this.level.endboss.intervalls = this.clearAllIntervalls(this.level.endboss.intervalls);
-        this.level.clouds.forEach(c => {  c.intervalls = this.clearAllIntervalls(c.intervalls) });
+        this.level.clouds.forEach(c => { c.intervalls = this.clearAllIntervalls(c.intervalls) });
+        this.bottles.forEach(b => { b.intervalls = this.clearAllIntervalls(c.intervalls) });
     }
 
     setWorld() {
         this.character.world = this;
     }
 
+    /**
+     * Draw all item
+     */
     draw() {
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -94,33 +126,43 @@ class World {
         this.addImageToMap(this.coinbar);
         this.ctx.translate(-1 * this.camera_x, 0);
 
-
-
-
         let self = this; // unerklärbar warum das nötig ist, aber die Funktion kennt  this nicht mehr
         requestAnimationFrame(function () {
             self.draw();
         });
     }
+
+    /**
+     * All of the given MoveableObjects in the arras shell be displayed.
+     * @param {Array} mo  Array with moveable objects 
+     */
     addArrayToMap(mo) {
         mo.forEach(elem => {
             this.addImageToMap(elem);
         });
     }
 
+    /** 
+     * Draw the given image ot the map.
+     * @param {Object} mo  MoveableObject
+     */
     addImageToMap(mo) {
         if (mo.otherDirection) {
             this.flipImage(mo);
         }
 
         mo.draw(this.ctx);
-         mo.drawFrame(this.ctx);
+        mo.drawFrame(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo);
         }
     }
 
+    /** Flips the image vertically
+     * 
+     * @param {Object} mo   MoveableObject
+     */
     flipImage(mo) {
         this.ctx.save();
         this.ctx.translate(mo.width, 0);
@@ -128,11 +170,18 @@ class World {
         this.ctx.scale(-1, 1);
     }
 
+    /** Flips the image back
+     * 
+     * @param {Object} mo   MoveableObject
+     */
     flipImageBack(mo) {
         this.ctx.restore();
         mo.x = mo.x * -1;
     }
 
+    /**
+     * All bottle, that are colliding or out of screen are removes vom this.bottles. The intervalls of the removed bottles are closed.
+     */
     bottleCollisionAndRemove() {
         let bo = [];
         let col;
@@ -142,10 +191,36 @@ class World {
             if (bottle.y < 500 && !col) {
                 bo.push(bottle);
             }
+            if (bottle.y >= 500) {
+                this.clearAllIntervalls(bottle.intervalls);
+            }
         });
         this.bottles = bo;
     }
 
+    /**
+     * When wie loose the game
+     */
+    gameLose() {
+        this.endGame();
+        this.gamestarted = false;
+        this.canvas.classList.add('d-none');
+        this.gameOver.classList.remove('d-none');
+        setTimeout(this.backToScreenFfromGameOver.bind(this), 3000);
+    }
+
+    /**
+     * When you won the game.
+     */
+    gameWins() {
+        this.gameWin = true;
+        this.endGame();
+        this.gamestarted = false;
+    }
+
+    /**
+     * When the game runs this method is executed:     * 
+     */
     run() {
         setInterval(() => {
             if (this.gamestarted) {
@@ -158,21 +233,18 @@ class World {
                     this.level.coins.forEach(c => {
                         c.playAnimation(2, 0);
                     });
+                    //if the distance between endboss and char is less than 350 the boss attacs
                     if (this.level.endboss.x - this.character.x < 350) {
                         console.log('start fight');
                         this.level.endboss.startFight = true;
                     }
+                    //if the deadAnimation of the boss is over the game ends
                     if (this.level.endboss.deadAnimationCounter == 0) {
-                        this.gameWin = true;
-                        this.endGame();
-                        this.gamestarted = false;
+                        this.gameWins();
                     }
+                    //if the Chakater dead animation is over the game ands
                     if (this.character.playDeath == 0) {
-                        this.endGame();
-                        this.gamestarted = false;
-                        this.canvas.classList.add('d-none');
-                        this.gameOver.classList.remove('d-none');
-                        setTimeout(this.backToScreenFfromGameOver.bind(this), 3000);
+                        this.gameLose();
 
                     }
                 }
@@ -184,7 +256,9 @@ class World {
         }, 125);
     }
 
-    
+ /**
+  * Handles when we go from the gameover screen to the Startscreen again
+  */
     backToScreenFfromGameOver() {
         console.log('back to screen');
         this.startScreen.classList.remove('d-none');
@@ -193,7 +267,9 @@ class World {
         this.gameOver.classList.add('d-none');
     }
 
-
+  /**
+  * Handles when we go from finished game to the Startscreen again
+  */
     backToScreen() {
         console.log('back to screen');
         this.startScreen.classList.remove('d-none');
@@ -202,6 +278,9 @@ class World {
     }
 
 
+    /**
+     * Handles, when we collidign with a coin.
+     */
     collectCoins() {
         let co = [];
         this.level.coins.forEach(coin => {
@@ -216,6 +295,9 @@ class World {
         this.level.coins = co;
     }
 
+    /**
+     * Handles, when we colliding with a bottle.
+     */
     collectingBottles() {
         let bo = []
         this.bottlesInWorld.forEach(bottle => {
@@ -229,6 +311,8 @@ class World {
         });
         this.bottlesInWorld = bo;
     }
+
+    /**Handles, when we press button D. This creates a new ThrowableObject and throws it. */
     throwObjects() {
         if (this.keyboard.D && this.character.amountBottles > 0) {
             let bottle = new ThrowableObject(this.character.x, this.character.y + 100);
@@ -244,6 +328,12 @@ class World {
         }
     }
 
+    /**
+     * Handles what happens, when a bottle is colliding with an enemy
+     * 
+     * @param {ThrowableObject} bottle 
+     * @returns 
+     */
     checkCollisionBottle(bottle) {
         let en = []
         let col = false;
@@ -267,10 +357,15 @@ class World {
         return col;
     }
 
+ /**
+  * set getHurt of the boss to false.
+  */
     notHurt() {
         this.level.endboss.getHurt = false;
     }
-
+/**
+ * Handles the collision of the character with the enemys (chickens and boss)
+ */
     checkCollisions() {
         let pain = false;
         this.level.enemies.forEach((enemy) => {
@@ -282,8 +377,7 @@ class World {
             }
         });
         this.character.getHurt = pain;
-
-        // if(this.character.isColliding())
+        
     }
 
 
