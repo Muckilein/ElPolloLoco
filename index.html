@@ -21,7 +21,7 @@
     <script src="./levels/level1.js"></script>
     <script src="./classes/world.class.js"></script>
     <script src="./js/game.js"></script>
-   
+
 
 </head>
 <!-- <body onload="init()"> -->
@@ -32,21 +32,33 @@
     style="cursor:pointer" onclick="init()">
 <img id="gameOverScreen" class="d-none" src="img/9_intro_outro_screens/game_over/example.png" width="960px"
     height="540px" style="cursor:pointer" onclick="init()">
-<div id="screen" >
-<canvas id="canvas" width="720px" height="480px" class="d-none">
-</canvas>
-<div id="btnContainer" class="d-none">
-    <div class="btn" >
-        <button id="btnL" class="btnSteuern">L</button>
-        <button id="btnR" class="btnSteuern">R</button>
+<div id="screen">
+    <canvas id="canvas" width="720px" height="480px" class="d-none">
+    </canvas>
+    <div id="btnContainer" class="d-none">
+        <div class="btn">
+            <button id="btnL" class="btnSteuern">L</button>
+            <button id="btnR" class="btnSteuern">R</button>
+        </div>
+        <button id="buttonFull" onclick="goFullscreen()" class="buttonSizeScreen">Fullscreen</button>
+        <button id="buttonSmall" onclick="closeFullscreen()" class="d-none buttonSizeScreen"> Smallscreen</button>
+        <div class="btn">
+            <button id="btnUP" class="btnSteuern">UP</button>
+            <button id="btnT" class="btnSteuern">T</button>
+        </div>
     </div>
-    <button id="buttonFull" onclick="goFullscreen()" class="buttonSizeScreen">Fullscreen</button>
-    <button id="buttonSmall" onclick="closeFullscreen()" class="d-none buttonSizeScreen" > Smallscreen</button>
-   <div class="btn">
-    <button id="btnUP" class="btnSteuern">UP</button>
-    <button id="btnT" class="btnSteuern">T</button>
-   </div>
+ 
 </div>
+<h2>How to play the game</h2>
+<div class="explanation">       
+    <div>
+        <div>Arrow LEFT: move left</div>
+        <div>Arrow RIGHTt: move right</div>
+    </div>
+    <div>
+        <div>Arrow SPACE: jump</div>
+        <div>Arrow D: throw a bottle</div>
+    </div>
 </div>
 
 

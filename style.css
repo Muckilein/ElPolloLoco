@@ -32,27 +32,36 @@ body {
 h1 {
     font-size: 64px;
     text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-}
-.btn{
-    display:flex;
-    gap:5px;
+    margin-block-start: 15px;
+    margin-block-end: 15px;
 }
 
-#btnContainer{
-     display:flex;
-     justify-content:  space-between; 
-     /* width:720px; */
-     margin-top: 10px;
-     position:absolute;
-     bottom: 0px;
-     left:0;
-     right:0;
-     
+h2 {
+    
+    margin-block-start: 15px;
+    margin-block-end: 15px;
 }
 
-#screen{
-    display: flex; 
-    flex-direction:column;
+.btn {
+    display: flex;
+    gap: 5px;
+}
+
+#btnContainer {
+    display: flex;
+    justify-content: space-between;
+    /* width:720px; */
+    margin-top: 10px;
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+
+}
+
+#screen {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     position: relative;
 }
@@ -64,27 +73,44 @@ h1 {
     cursor: pointer;
 }
 
-.fullHeight{
-    height:100vh;
+.fullHeight {
+    height: 100vh;
 }
-.fullWidth{
-    width:100%;
+
+.fullWidth {
+    width: 100%;
+}
+
+.explanation {
+    display: flex;
+    justify-content: space-between;
+    width: 720px;
 }
 
 @media only screen and (max-width: 720px) {
     canvas {
         width: 100%;
+    }  
+
+    .explanation {
+       width:100vw;
     }
-    /* #btnContainer {
-        width: 100%;
-    } */
    
+
+}
+
+@media only screen and (max-width: 960px) {
+   
+    #startScreen{
+      width:100vw;  
+      height: auto;
+
+    }
+
 }
 
 @media (min-width: 720px) {
-    /* #btnContainer{
-        display: none !important;;       
-    } */
+   
 }
 
 @media only screen and (max-height: 480px) {
@@ -92,7 +118,7 @@ h1 {
         height: 100vh;
     }
 
-    h1{
+    h1 {
         display: none;
     }
 

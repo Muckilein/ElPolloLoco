@@ -3,13 +3,15 @@ let world;
 let keyboard = new Keyboard();
 let first = true;
 let screen;
+let buttonContainer;
 
 function init() {
 
     canvas = document.getElementById('canvas');
     startScreen = document.getElementById('startScreen');
     gameOver = document.getElementById('gameOverScreen');
-    document.getElementById('btnContainer').classList.remove('d-none');
+    buttonContainer = document.getElementById('btnContainer');
+    buttonContainer.classList.remove('d-none');
     if (first) {
         callInitFirstTime();
 
@@ -27,7 +29,7 @@ function init() {
 }
 
 function callInitFirstTime() {
-    world = new World(gameOver, startScreen, canvas, keyboard);
+    world = new World(buttonContainer,gameOver, startScreen, canvas, keyboard);
     canvas.addEventListener("click", function (e) {
         let cRect = canvas.getBoundingClientRect();        // Gets CSS pos, and width/height
         let canvasX = Math.round(e.clientX - cRect.left);  // Subtract the 'left' of the canvas 
@@ -73,6 +75,9 @@ function goFull(elem) {
     }
 }
 
+/**
+ * Adds all the required listeners for the tablet/handymode
+ */
 function addTouchListeners() {
     document.getElementById('btnL').addEventListener("touchstart", (e) => {
         e.preventDefault();

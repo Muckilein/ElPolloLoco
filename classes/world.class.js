@@ -14,17 +14,19 @@ class World {
     gameWin = false;
     startScreen;
     gameOver;
+    buttonContainer
     character = new Charakter();
     firstGame = true;
     gamestarted = false;
 
 
-    constructor(gameOver, startScreen, canvas, keyboard) {
+    constructor(buttonContainer,gameOver, startScreen, canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.startScreen = startScreen;
         this.gameOver = gameOver;
         this.keyboard = keyboard;
+        this.buttonContainer = buttonContainer;
         this.draw();
         this.setWorld();
         this.run();
@@ -206,6 +208,7 @@ class World {
         this.gamestarted = false;
         this.canvas.classList.add('d-none');
         this.gameOver.classList.remove('d-none');
+        this.buttonContainer.classList.add('d-none');
         setTimeout(this.backToScreenFfromGameOver.bind(this), 3000);
     }
 
@@ -216,6 +219,7 @@ class World {
         this.gameWin = true;
         this.endGame();
         this.gamestarted = false;
+        setTimeout(this.backToScreen.bind(this), 1000);
     }
 
     /**
@@ -248,10 +252,7 @@ class World {
 
                     }
                 }
-                if (this.gameWin) {
-                    setTimeout(this.backToScreen.bind(this), 1000);
-
-                }
+               
             }
         }, 125);
     }
@@ -259,21 +260,21 @@ class World {
  /**
   * Handles when we go from the gameover screen to the Startscreen again
   */
-    backToScreenFfromGameOver() {
-        console.log('back to screen');
+    backToScreenFfromGameOver() {       
         this.startScreen.classList.remove('d-none');
         this.canvas.classList.add('d-none');
         this.gameWin = false;
         this.gameOver.classList.add('d-none');
+        
     }
 
   /**
   * Handles when we go from finished game to the Startscreen again
   */
-    backToScreen() {
-        console.log('back to screen');
+    backToScreen() {       
         this.startScreen.classList.remove('d-none');
         this.canvas.classList.add('d-none');
+        this.buttonContainer.classList.add('d-none');
         this.gameWin = false;
     }
 
