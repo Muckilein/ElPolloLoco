@@ -14,19 +14,21 @@ class World {
     gameWin = false;
     startScreen;
     gameOver;
-    buttonContainer
+    buttonContainer;
+    explanation;
     character = new Charakter();
     firstGame = true;
     gamestarted = false;
 
 
-    constructor(buttonContainer,gameOver, startScreen, canvas, keyboard) {
+    constructor(explanation,buttonContainer, gameOver, startScreen, canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.startScreen = startScreen;
         this.gameOver = gameOver;
         this.keyboard = keyboard;
         this.buttonContainer = buttonContainer;
+        this.explanation=explanation;
         this.draw();
         this.setWorld();
         this.run();
@@ -73,6 +75,7 @@ class World {
         this.gamestarted = true;
         this.camera_x = -100;
         this.gameWin = false;
+        this.bottles = [];
         this.bottlesInWorld = this.level.bottles;
         this.level.endboss.setChar(this.character);
     }
@@ -95,10 +98,11 @@ class World {
     endGame() {
 
         this.character.intervalls = this.clearAllIntervalls(this.character.intervalls);
-        this.level.enemies.forEach(e => { e.intervalls = this.clearAllIntervalls(e.intervalls) });
+        this.character.walking_sound.pause();
+        this.level.enemies.forEach(e => { e.intervalls = this.clearAllIntervalls(e.intervalls); e.closeSound(); });
         this.level.endboss.intervalls = this.clearAllIntervalls(this.level.endboss.intervalls);
         this.level.clouds.forEach(c => { c.intervalls = this.clearAllIntervalls(c.intervalls) });
-        this.bottles.forEach(b => { b.intervalls = this.clearAllIntervalls(c.intervalls) });
+        this.bottles.forEach(b => { b.intervalls = this.clearAllIntervalls(b.intervalls) });
     }
 
     setWorld() {
@@ -193,7 +197,8 @@ class World {
             if (bottle.y < 500 && !col) {
                 bo.push(bottle);
             }
-            if (bottle.y >= 500) {
+            if (bottle.y >= 500 || col) {
+                console.log('clear bottle intervals');
                 this.clearAllIntervalls(bottle.intervalls);
             }
         });
@@ -205,11 +210,12 @@ class World {
      */
     gameLose() {
         this.endGame();
-        this.gamestarted = false;
-        this.canvas.classList.add('d-none');
+        this.gamestarted = false;       
         this.gameOver.classList.remove('d-none');
         this.buttonContainer.classList.add('d-none');
+        this.explanation.classList.add('d-none');       
         setTimeout(this.backToScreenFfromGameOver.bind(this), 3000);
+        
     }
 
     /**
@@ -220,6 +226,23 @@ class World {
         this.endGame();
         this.gamestarted = false;
         setTimeout(this.backToScreen.bind(this), 1000);
+    }
+
+    /**
+     * The anemies playing a sound when the charakter is within a specific distance.
+     */
+    stopSounds() {
+        this.level.enemies.forEach(e => {
+            let d = this.character.x - e.x;
+            let dv = 500;
+
+            if (d > dv / 2) {
+                e.playSound = false;
+            }
+            if (d > (-1 * dv) && (d <= dv / 2)) {
+                e.playSound = true;
+            }
+        });
     }
 
     /**
@@ -234,6 +257,7 @@ class World {
                     this.collectingBottles();
                     this.collectCoins();
                     this.bottleCollisionAndRemove();
+                    this.stopSounds();
                     this.level.coins.forEach(c => {
                         c.playAnimation(2, 0);
                     });
@@ -252,26 +276,26 @@ class World {
 
                     }
                 }
-               
+
             }
         }, 125);
     }
 
- /**
-  * Handles when we go from the gameover screen to the Startscreen again
-  */
-    backToScreenFfromGameOver() {       
+    /**
+     * Handles when we go from the gameover screen to the Startscreen again
+     */
+    backToScreenFfromGameOver() {
         this.startScreen.classList.remove('d-none');
         this.canvas.classList.add('d-none');
         this.gameWin = false;
-        this.gameOver.classList.add('d-none');
-        
+        this.gameOver.classList.add('d-none');      
+
     }
 
-  /**
-  * Handles when we go from finished game to the Startscreen again
-  */
-    backToScreen() {       
+    /**
+    * Handles when we go from finished game to the Startscreen again
+    */
+    backToScreen() {
         this.startScreen.classList.remove('d-none');
         this.canvas.classList.add('d-none');
         this.buttonContainer.classList.add('d-none');
@@ -341,8 +365,11 @@ class World {
         this.level.enemies.forEach((enemy) => {
             if (bottle.isColliding(enemy)) {
                 console.log('collision with Bottle'); col = true;
+                enemy.closeSound();
 
-            } else { en.push(enemy); }
+            } else {
+                en.push(enemy);
+            }
         });
         if (bottle.isColliding(this.level.endboss) && this.level.endboss.energy > 0) {
             console.log('collision with Boss');
@@ -358,15 +385,15 @@ class World {
         return col;
     }
 
- /**
-  * set getHurt of the boss to false.
-  */
+    /**
+     * set getHurt of the boss to false.
+     */
     notHurt() {
         this.level.endboss.getHurt = false;
     }
-/**
- * Handles the collision of the character with the enemys (chickens and boss)
- */
+    /**
+     * Handles the collision of the character with the enemys (chickens and boss)
+     */
     checkCollisions() {
         let pain = false;
         this.level.enemies.forEach((enemy) => {
@@ -378,7 +405,7 @@ class World {
             }
         });
         this.character.getHurt = pain;
-        
+
     }
 
 

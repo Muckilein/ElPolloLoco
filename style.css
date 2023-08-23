@@ -37,7 +37,7 @@ h1 {
 }
 
 h2 {
-    
+
     margin-block-start: 15px;
     margin-block-end: 15px;
 }
@@ -64,6 +64,7 @@ h2 {
     flex-direction: column;
     justify-content: center;
     position: relative;
+    overflow-x: hidden;
 }
 
 .btnSteuern {
@@ -81,36 +82,46 @@ h2 {
     width: 100%;
 }
 
-.explanation {
+#explanation {
     display: flex;
     justify-content: space-between;
     width: 720px;
 }
 
+.content{
+    position: relative;
+    height:100vh;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
 @media only screen and (max-width: 720px) {
     canvas {
         width: 100%;
-    }  
+    }    
 
-    .explanation {
-       width:100vw;
-    }
-   
-
-}
-
-@media only screen and (max-width: 960px) {
-   
-    #startScreen{
-      width:100vw;  
-      height: auto;
-
+    #explanation {
+       position: absolute;
+       top:0;
+       left:0;
+       right:0;
+       justify-content: flex-start;
+       gap:50px;
     }
 
-}
 
-@media (min-width: 720px) {
-   
+    h2 {
+        display: none;
+    }
+    #buttonFull{
+        display: none;
+    }
+
+    #gameOverScreen{
+        width:100%;
+    }
+
+
 }
 
 @media only screen and (max-height: 480px) {
@@ -121,8 +132,28 @@ h2 {
     h1 {
         display: none;
     }
+    #buttonFull{
+        display: none;
+    }
+    #gameOverScreen{
+        height:100vh;
+    }
 
 }
+
+@media only screen and (max-width: 960px) {
+
+    #startScreen {
+        width: 100vw;
+        height: auto;
+
+    }
+
+}
+
+
+
+
 
 @font-face {
 

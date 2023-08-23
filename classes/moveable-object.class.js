@@ -10,6 +10,7 @@ class MoveableObject extends DrawableObject {
     //otherDirection = false;
     getHurt = false;
     intervalls = [0];
+    playSound;
 
 
     /**

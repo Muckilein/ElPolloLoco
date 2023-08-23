@@ -213,8 +213,8 @@ class Charakter extends MoveableObject {
     moveLeftRightCamera() {
         this.moveRight();
         this.moveLeft();
-        if (!keyboard.RIGHT && !keyboard.LEFT) {
-            // this.walking_sound.pause();
+        if (!keyboard.RIGHT && !keyboard.LEFT|| this.isAboveGround()) {
+            this.walking_sound.pause();
         }
         this.world.camera_x = -1 * this.x + 100;
         //statusbar moves with the camera
@@ -252,6 +252,7 @@ class Charakter extends MoveableObject {
                 if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround() && !this.getHurt) {
                     //simple walking
                     this.playAnimation(this.images_walking.length, this.WALKING);
+                    this.walking_sound.play();
                 } else {
                     if (this.getHurt) {
                         //painfull face
@@ -288,7 +289,7 @@ class Charakter extends MoveableObject {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end) {
             this.x += 5;
             this.otherDirection = false;
-            //this.walking_sound.play();
+           
         }
     }
     /**
@@ -298,7 +299,7 @@ class Charakter extends MoveableObject {
         if (this.world.keyboard.LEFT && this.x > 0) {
             this.x -= 5;
             this.otherDirection = true;
-            //this.walking_sound.play();
+           
         }
     }
 

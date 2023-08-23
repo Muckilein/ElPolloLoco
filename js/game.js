@@ -4,12 +4,16 @@ let keyboard = new Keyboard();
 let first = true;
 let screen;
 let buttonContainer;
+let startScreen;
+let gameOver;
+let explanation;
 
 function init() {
 
     canvas = document.getElementById('canvas');
     startScreen = document.getElementById('startScreen');
     gameOver = document.getElementById('gameOverScreen');
+    explanation= document.getElementById('explanation');
     buttonContainer = document.getElementById('btnContainer');
     buttonContainer.classList.remove('d-none');
     if (first) {
@@ -17,6 +21,7 @@ function init() {
 
     } else {
         world.level = newLevel1();
+       
     }
     startScreen.classList.add('d-none');
     canvas.classList.remove('d-none');
@@ -29,7 +34,7 @@ function init() {
 }
 
 function callInitFirstTime() {
-    world = new World(buttonContainer,gameOver, startScreen, canvas, keyboard);
+    world = new World(explanation,buttonContainer,gameOver, startScreen, canvas, keyboard);
     canvas.addEventListener("click", function (e) {
         let cRect = canvas.getBoundingClientRect();        // Gets CSS pos, and width/height
         let canvasX = Math.round(e.clientX - cRect.left);  // Subtract the 'left' of the canvas 
