@@ -21,14 +21,14 @@ class World {
     gamestarted = false;
 
 
-    constructor(explanation,buttonContainer, gameOver, startScreen, canvas, keyboard) {
+    constructor(explanation, buttonContainer, gameOver, startScreen, canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.startScreen = startScreen;
         this.gameOver = gameOver;
         this.keyboard = keyboard;
         this.buttonContainer = buttonContainer;
-        this.explanation=explanation;
+        this.explanation = explanation;
         this.draw();
         this.setWorld();
         this.run();
@@ -210,12 +210,12 @@ class World {
      */
     gameLose() {
         this.endGame();
-        this.gamestarted = false;       
+        this.gamestarted = false;
         this.gameOver.classList.remove('d-none');
         this.buttonContainer.classList.add('d-none');
-        this.explanation.classList.add('d-none');       
-        setTimeout(this.backToScreenFfromGameOver.bind(this), 3000);
-        
+        if (window.innerWidth <= 720) { this.explanation.classList.add('d-none'); }
+        setTimeout(this.backToScreenFfromGameOver.bind(this), 2000);
+
     }
 
     /**
@@ -286,9 +286,10 @@ class World {
      */
     backToScreenFfromGameOver() {
         this.startScreen.classList.remove('d-none');
+        this.explanation.classList.remove('d-none');
         this.canvas.classList.add('d-none');
         this.gameWin = false;
-        this.gameOver.classList.add('d-none');      
+        this.gameOver.classList.add('d-none');
 
     }
 
