@@ -101,6 +101,7 @@ class World {
         this.character.walking_sound.pause();
         this.level.enemies.forEach(e => { e.intervalls = this.clearAllIntervalls(e.intervalls); e.closeSound(); });
         this.level.endboss.intervalls = this.clearAllIntervalls(this.level.endboss.intervalls);
+        this.level.endboss.boss_sound.pause();
         this.level.clouds.forEach(c => { c.intervalls = this.clearAllIntervalls(c.intervalls) });
         this.bottles.forEach(b => { b.intervalls = this.clearAllIntervalls(b.intervalls) });
     }
@@ -158,7 +159,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo);

@@ -14,6 +14,7 @@ class Endboss extends MoveableObject {
     image_attack = ['../img/4_enemie_boss_chicken/3_attack/G13.png', '../img/4_enemie_boss_chicken/3_attack/G14.png'
         , '../img/4_enemie_boss_chicken/3_attack/G15.png', '../img/4_enemie_boss_chicken/3_attack/G16.png', '../img/4_enemie_boss_chicken/3_attack/G17.png',
         '../img/4_enemie_boss_chicken/3_attack/G18.png', '../img/4_enemie_boss_chicken/3_attack/G19.png', '../img/4_enemie_boss_chicken/3_attack/G20.png'];
+    boss_sound = new Audio('../audio/chicken.mp3');
     standardPos;
     deadAnimationCounter;
     startFight;
@@ -45,9 +46,9 @@ class Endboss extends MoveableObject {
     }
 
 
- /** 
-  * Animations of the endboss depending on the state of the endboss.
- */
+    /** 
+     * Animations of the endboss depending on the state of the endboss.
+    */
     animate() {
 
         let interv = setInterval(() => {
@@ -63,6 +64,7 @@ class Endboss extends MoveableObject {
                     if (this.startFight) {
                         this.viewToChar();
                         this.playAnimation(this.image_attack.length, this.ATTACK);
+                        this.boss_sound.play();
                     }
                     else {
                         this.playAnimation(this.images.length, this.ALERT);
@@ -140,6 +142,6 @@ class Endboss extends MoveableObject {
         }
     }
 
-    
+
 
 }
