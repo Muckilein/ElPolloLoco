@@ -1,5 +1,7 @@
 class Coin extends MoveableObject {
-    images = ['../img/8_coin/coin_1.png', '../img/8_coin/coin_2.png'];
+    // add ='/El%20Pollo%20Loco';
+    add ='';
+    images = ['..'+this.add+'/img/8_coin/coin_1.png', '..'+this.add+'/img/8_coin/coin_2.png'];
 
     constructor(x, y) {
         super().loadImages(this.images);

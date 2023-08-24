@@ -1,6 +1,8 @@
 class ThrowableObject extends MoveableObject {
-    image = 'img/6_salsa_bottle/salsa_bottle.png';
-
+    // add ='/El%20Pollo%20Loco';
+    add ='';
+    image = ''+this.add+'/img/6_salsa_bottle/salsa_bottle.png';
+   
     constructor(x, y) {
         super().loadImage(this.image);;
         this.x = x + this.width - 20;

@@ -22,6 +22,11 @@ class MoveableObject extends DrawableObject {
         this.energy = 100;
     }
 
+    isCollidingFromTop(mo,d){
+        return ((this.x+this.offset.left< mo.x+mo.offset.left && this.x+this.width-this.offset.right >mo.x+mo.offset.left)
+        ||(this.x+this.width-this.offset.right>mo.x+mo.width-mo.offset.right && this.x+this.offset.left<mo.width-mo.offset.right))&&(d<mo.height && d>0 );
+    }
+
     /**
      * returns whether the character is colliding with the given MoveableObject.
      *  

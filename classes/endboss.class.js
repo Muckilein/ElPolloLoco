@@ -1,20 +1,22 @@
 class Endboss extends MoveableObject {
-    images = ['../img/4_enemie_boss_chicken/2_alert/G5.png',
-        '../img/4_enemie_boss_chicken/2_alert/G6.png',
-        '../img/4_enemie_boss_chicken/2_alert/G7.png',
-        '../img/4_enemie_boss_chicken/2_alert/G8.png',
-        '../img/4_enemie_boss_chicken/2_alert/G9.png',
-        '../img/4_enemie_boss_chicken/2_alert/G10.png',
-        '../img/4_enemie_boss_chicken/2_alert/G11.png',
-        '../img/4_enemie_boss_chicken/2_alert/G12.png'
+    // add ='/El%20Pollo%20Loco';
+    add ='';
+    images = ['..'+this.add+'/img/4_enemie_boss_chicken/2_alert/G5.png',
+        '..'+this.add+'/img/4_enemie_boss_chicken/2_alert/G6.png',
+        '..'+this.add+'/img/4_enemie_boss_chicken/2_alert/G7.png',
+        '..'+this.add+'/img/4_enemie_boss_chicken/2_alert/G8.png',
+        '..'+this.add+'/img/4_enemie_boss_chicken/2_alert/G9.png',
+        '..'+this.add+'/img/4_enemie_boss_chicken/2_alert/G10.png',
+        '..'+this.add+'/img/4_enemie_boss_chicken/2_alert/G11.png',
+        '..'+this.add+'/img/4_enemie_boss_chicken/2_alert/G12.png'
     ];
-    image_dead = ['../img/4_enemie_boss_chicken/5_dead/G24.png', '../img/4_enemie_boss_chicken/5_dead/G25.png', '../img/4_enemie_boss_chicken/5_dead/G26.png',
-        '../img/2_character_pepe/5_dead/D-57.png'];
-    images_getHurt = ['../img/4_enemie_boss_chicken/4_hurt/G21.png', '../img/4_enemie_boss_chicken/4_hurt/G22.png', '../img/4_enemie_boss_chicken/4_hurt/G23.png'];
-    image_attack = ['../img/4_enemie_boss_chicken/3_attack/G13.png', '../img/4_enemie_boss_chicken/3_attack/G14.png'
-        , '../img/4_enemie_boss_chicken/3_attack/G15.png', '../img/4_enemie_boss_chicken/3_attack/G16.png', '../img/4_enemie_boss_chicken/3_attack/G17.png',
-        '../img/4_enemie_boss_chicken/3_attack/G18.png', '../img/4_enemie_boss_chicken/3_attack/G19.png', '../img/4_enemie_boss_chicken/3_attack/G20.png'];
-    boss_sound = new Audio('../audio/chicken.mp3');
+    image_dead = ['..'+this.add+'/img/4_enemie_boss_chicken/5_dead/G24.png', '..'+this.add+'/img/4_enemie_boss_chicken/5_dead/G25.png', '..'+this.add+'/img/4_enemie_boss_chicken/5_dead/G26.png',
+        '..'+this.add+'/img/2_character_pepe/5_dead/D-57.png'];
+    images_getHurt = ['..'+this.add+'/img/4_enemie_boss_chicken/4_hurt/G21.png', '..'+this.add+'/img/4_enemie_boss_chicken/4_hurt/G22.png', '..'+this.add+'/img/4_enemie_boss_chicken/4_hurt/G23.png'];
+    image_attack = ['..'+this.add+'/img/4_enemie_boss_chicken/3_attack/G13.png', '..'+this.add+'/img/4_enemie_boss_chicken/3_attack/G14.png'
+        , '..'+this.add+'/img/4_enemie_boss_chicken/3_attack/G15.png', '..'+this.add+'/img/4_enemie_boss_chicken/3_attack/G16.png', '..'+this.add+'/img/4_enemie_boss_chicken/3_attack/G17.png',
+        '..'+this.add+'/img/4_enemie_boss_chicken/3_attack/G18.png', '..'+this.add+'/img/4_enemie_boss_chicken/3_attack/G19.png', '..'+this.add+'/img/4_enemie_boss_chicken/3_attack/G20.png'];
+    boss_sound = new Audio('..'+this.add+'/audio/chicken.mp3');
     standardPos;
     deadAnimationCounter;
     startFight;
@@ -28,7 +30,7 @@ class Endboss extends MoveableObject {
 
     constructor(x) {
         console.log('call consructor Boss');
-        super().loadImage('../img/4_enemie_boss_chicken/1_walk/G1.png');
+        super().loadImage('..'+this.add+'/img/4_enemie_boss_chicken/1_walk/G1.png');
         this.loadImages(this.images);
         this.loadImages(this.image_dead);
         this.loadImages(this.images_getHurt);

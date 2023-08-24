@@ -159,7 +159,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        // mo.drawFrame(this.ctx);
+        mo.drawFrame(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo);
@@ -246,6 +246,20 @@ class World {
         });
     }
 
+   
+
+    checkJumpOn() {
+        
+        this.level.enemies.forEach(e => {
+            let d = (this.character.y + this.character.height-this.character.offset['bottom']) - e.y
+            if (this.character.isCollidingFromTop(e,d))
+            {   console.log('colliding top');
+                e.jumpedOn=true;
+                this.character.speedY=20;
+            }
+        });
+    }
+
     /**
      * When the game runs this method is executed:     * 
      */
@@ -253,6 +267,7 @@ class World {
         setInterval(() => {
             if (this.gamestarted) {
                 if (!this.gameWin) {
+                    this.checkJumpOn();
                     this.checkCollisions();
                     this.throwObjects();
                     this.collectingBottles();
@@ -365,7 +380,7 @@ class World {
         let en = []
         let col = false;
         this.level.enemies.forEach((enemy) => {
-            if (bottle.isColliding(enemy)) {
+            if (bottle.isColliding(enemy)&& !enemy.jumpedOn) {
                 console.log('collision with Bottle'); col = true;
                 enemy.closeSound();
 
@@ -399,7 +414,7 @@ class World {
     checkCollisions() {
         let pain = false;
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy) || (this.character.isColliding(this.level.endboss) && this.level.endboss.energy > 0)) {
+            if ((this.character.isColliding(enemy) && !enemy.jumpedOn) || (this.character.isColliding(this.level.endboss) && this.level.endboss.energy > 0)) {
                 console.log('collision with Character', this.character.energy);
                 this.character.hit();
                 this.statusbar.setPercentage(this.character.energy);
