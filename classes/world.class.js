@@ -159,7 +159,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo);
@@ -252,7 +252,7 @@ class World {
         
         this.level.enemies.forEach(e => {
             let d = (this.character.y + this.character.height-this.character.offset['bottom']) - e.y
-            if (this.character.isCollidingFromTop(e,d))
+            if (this.character.isCollidingFromTop(e,d)&& !e.jumpedOn)
             {   console.log('colliding top');
                 e.jumpedOn=true;
                 this.character.speedY=20;

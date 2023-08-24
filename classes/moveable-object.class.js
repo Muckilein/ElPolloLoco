@@ -24,7 +24,8 @@ class MoveableObject extends DrawableObject {
 
     isCollidingFromTop(mo,d){
         return ((this.x+this.offset.left< mo.x+mo.offset.left && this.x+this.width-this.offset.right >mo.x+mo.offset.left)
-        ||(this.x+this.width-this.offset.right>mo.x+mo.width-mo.offset.right && this.x+this.offset.left<mo.width-mo.offset.right))&&(d<mo.height && d>0 );
+        ||(this.x+this.width-this.offset.right>mo.x+mo.width-mo.offset.right && this.x+this.offset.left<mo.width-mo.offset.right))&&(d<mo.height && d>-20 )&&
+        !this.getHurt;
     }
 
     /**
