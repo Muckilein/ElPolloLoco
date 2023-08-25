@@ -136,11 +136,11 @@ class Endboss extends MoveableObject {
     viewToChar() {
         if (this.character.x < this.x && this.getDistance() > 50) {
             this.otherDirection = false;
-            this.x -= 20;
+            this.x -= 15;
         }
         if (this.character.x > this.x && this.getDistance() > 50) {
             this.otherDirection = true;
-            this.x += 20;
+            this.x += 15;
         }
     }
 

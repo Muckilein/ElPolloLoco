@@ -14,6 +14,7 @@ class World {
     gameWin = false;
     startScreen;
     gameOver;
+    winScreen;
     buttonContainer;
     explanation;
     character = new Charakter();
@@ -21,11 +22,12 @@ class World {
     gamestarted = false;
 
 
-    constructor(explanation, buttonContainer, gameOver, startScreen, canvas, keyboard) {
+    constructor(winScreen, explanation, buttonContainer, gameOver, startScreen, canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.startScreen = startScreen;
         this.gameOver = gameOver;
+        this.winScreen = winScreen;
         this.keyboard = keyboard;
         this.buttonContainer = buttonContainer;
         this.explanation = explanation;
@@ -159,7 +161,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo);
@@ -197,9 +199,9 @@ class World {
             // if the bottle leaves the screen she is removed.
             if (bottle.y < 500 && !col && bottle.splashCounter == 6) {
                 bo.push(bottle);
-            }           
+            }
             else {
-                if (col || (bottle.splashCounter < 6 && bottle.splashCounter>0)) {
+                if (col || (bottle.splashCounter < 6 && bottle.splashCounter > 0)) {
                     bottle.splashCounter--;
                     console.log('SPLASH');
                     bo.push(bottle);
@@ -233,7 +235,9 @@ class World {
         this.gameWin = true;
         this.endGame();
         this.gamestarted = false;
-        setTimeout(this.backToScreen.bind(this), 1000);
+        this.winScreen.classList.remove('d-none');
+        this.buttonContainer.classList.add('d-none');
+        setTimeout(this.backToScreen.bind(this), 2000);
     }
 
     /**
@@ -322,9 +326,11 @@ class World {
     */
     backToScreen() {
         this.startScreen.classList.remove('d-none');
+        this.explanation.classList.remove('d-none');
         this.canvas.classList.add('d-none');
         this.buttonContainer.classList.add('d-none');
         this.gameWin = false;
+        this.winScreen.classList.add('d-none');
     }
 
 
@@ -396,7 +402,7 @@ class World {
                 en.push(enemy);
             }
         });
-        if (bottle.isColliding(this.level.endboss) && this.level.endboss.energy > 0 && bottle.splashCounter==6) {
+        if (bottle.isColliding(this.level.endboss) && this.level.endboss.energy > 0 && bottle.splashCounter == 6) {
             console.log('collision with Boss');
             this.level.endboss.energy -= 35;
             this.level.endboss.energy = Math.max(this.level.endboss.energy, 0);
