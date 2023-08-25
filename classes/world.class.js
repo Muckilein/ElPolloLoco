@@ -159,7 +159,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        // mo.drawFrame(this.ctx);
+        mo.drawFrame(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo);
@@ -195,10 +195,17 @@ class World {
         this.bottles.forEach(bottle => {
             col = this.checkCollisionBottle(bottle);
             // if the bottle leaves the screen she is removed.
-            if (bottle.y < 500 && !col) {
+            if (bottle.y < 500 && !col && bottle.splashCounter == 6) {
                 bo.push(bottle);
+            }           
+            else {
+                if (col || (bottle.splashCounter < 6 && bottle.splashCounter>0)) {
+                    bottle.splashCounter--;
+                    console.log('SPLASH');
+                    bo.push(bottle);
+                }
             }
-            if (bottle.y >= 500 || col) {
+            if (bottle.splashCounter == 0) {
                 console.log('clear bottle intervals');
                 this.clearAllIntervalls(bottle.intervalls);
             }
@@ -237,7 +244,7 @@ class World {
             let d = this.character.x - e.x;
             let dv = 500;
 
-            if (d > dv / 2) {
+            if ((d > dv / 2) || (d < -1 * dv)) {
                 e.playSound = false;
             }
             if (d > (-1 * dv) && (d <= dv / 2)) {
@@ -246,16 +253,16 @@ class World {
         });
     }
 
-   
+
 
     checkJumpOn() {
-        
+
         this.level.enemies.forEach(e => {
-            let d = (this.character.y + this.character.height-this.character.offset['bottom']) - e.y
-            if (this.character.isCollidingFromTop(e,d)&& !e.jumpedOn)
-            {   console.log('colliding top');
-                e.jumpedOn=true;
-                this.character.speedY=20;
+            let d = (this.character.y + this.character.height - this.character.offset['bottom']) - e.y
+            if (this.character.isCollidingFromTop(e, d) && !e.jumpedOn) {
+                console.log('colliding top');
+                e.jumpedOn = true;
+                this.character.speedY = 30;
             }
         });
     }
@@ -291,6 +298,7 @@ class World {
                         this.gameLose();
 
                     }
+
                 }
 
             }
@@ -380,7 +388,7 @@ class World {
         let en = []
         let col = false;
         this.level.enemies.forEach((enemy) => {
-            if (bottle.isColliding(enemy)&& !enemy.jumpedOn) {
+            if (bottle.isColliding(enemy) && !enemy.jumpedOn) {
                 console.log('collision with Bottle'); col = true;
                 enemy.closeSound();
 
@@ -388,7 +396,7 @@ class World {
                 en.push(enemy);
             }
         });
-        if (bottle.isColliding(this.level.endboss) && this.level.endboss.energy > 0) {
+        if (bottle.isColliding(this.level.endboss) && this.level.endboss.energy > 0 && bottle.splashCounter==6) {
             console.log('collision with Boss');
             this.level.endboss.energy -= 35;
             this.level.endboss.energy = Math.max(this.level.endboss.energy, 0);

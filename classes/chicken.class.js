@@ -6,6 +6,7 @@ class Chicken extends MoveableObject {
     chicken_sound = new Audio('..' + this.add + '/audio/chicken.mp3');
     jumpedOn = false;
 
+
     constructor() {
         super().loadImage('..' + this.add + '/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.loadImages(this.images);
@@ -19,26 +20,31 @@ class Chicken extends MoveableObject {
         this.initMoveableObjects();
         this.playSound = false;
 
+
     }
 
     /**
      * Animation of the Chickens. Moves only left.
      */
     animate() {
-       
+
         // this.moveLeft();
-      
+
         let interv = setInterval(() => {
-            if (!this.jumpedOn) { 
+            if (!this.jumpedOn) {
                 this.playAnimation(this.images.length, 0);
                 this.x = this.x - this.speed;
-             }
+            }
             else {
                 this.playAnimation(1, this.images.length);
-                this.closeSound();
+                if (this.playSound) { this.closeSound(); }
             }
             if (this.playSound) { this.chicken_sound.play(); }
-            else { this.chicken_sound.pause(); }
+            else {
+                if (!this.jumpedOn) {
+                    this.chicken_sound.pause();
+                }
+            }
 
         }, 100);
         this.intervalls.push(interv);

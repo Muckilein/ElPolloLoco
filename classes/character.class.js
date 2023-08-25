@@ -23,7 +23,7 @@ class Charakter extends MoveableObject {
     currentImage;
     jumpNumber;
     fallNumber;
-    startJump;
+    startJump;//1 if we are starting the jump, 0 when we are jumping
     playDeath;
     idleSlowAnimation;      //supportiv variable for slowing down the idle animation
     amountBottles;
@@ -93,6 +93,7 @@ class Charakter extends MoveableObject {
      */
     jumpCalculations() {
         // startjump = 1 if we are startting the jump
+        // this is nessesary, so that while showing the frist image (Pepe squat down) he did not move top, but stays in the ground(goes only 1 pixel up)
         if (0 == this.startJump) {
             this.y -= this.speedY;
             this.speedY -= this.accleration;

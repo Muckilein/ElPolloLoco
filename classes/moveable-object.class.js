@@ -1,10 +1,11 @@
 class MoveableObject extends DrawableObject {
 
     speed = 0.15;
-    speedY = 40;
-    accleration = 3;
+    maxSpeed = 45;
+    speedY = this.maxSpeed;
+    accleration = 6;
     addOld = 0;
-    maxSpeed = 30;
+    
     offsetY = 0;
     energy = 100;
     //otherDirection = false;
@@ -24,7 +25,8 @@ class MoveableObject extends DrawableObject {
 
     isCollidingFromTop(mo,d){
         return ((this.x+this.offset.left< mo.x+mo.offset.left && this.x+this.width-this.offset.right >mo.x+mo.offset.left)
-        ||(this.x+this.width-this.offset.right>mo.x+mo.width-mo.offset.right && this.x+this.offset.left<mo.width-mo.offset.right))&&(d<mo.height && d>-20 )&&
+        ||(this.x+this.width-this.offset.right>mo.x+mo.width-mo.offset.right && this.x+this.offset.left<mo.width-mo.offset.right)
+        ||(this.x+this.offset.left> mo.x+mo.offset.left && this.x+this.width-this.offset.right < mo.x+mo.width-mo.offset.right))&&(d<mo.height && d>-20 )&&
         !this.getHurt;
     }
 
@@ -59,11 +61,15 @@ class MoveableObject extends DrawableObject {
             if (this.isAboveGround() && (this.speedY <= 0)) {
 
                 this.y -= this.speedY;
+                this.speedY -= this.accleration;
                 if (!(this instanceof ThrowableObject)) {
                     this.y = Math.min(460 - this.height, this.y);
-                }
-                this.speedY -= this.accleration;
-
+                }else{
+                    if(this.splashCounter<6){
+                        this.speedY+=this.accleration;
+                        this.y+=this.speedY;
+                    }
+                }             
             }
 
         }, 1000 / 25);
