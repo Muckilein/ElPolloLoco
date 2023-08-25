@@ -206,10 +206,7 @@ class Charakter extends MoveableObject {
         this.energy -= 2;
         if (this.energy <= 0) {
             this.energy = 0;
-        }
-        // if (!this.isDeath()) {
-        //     this.playAnimation(1, 15);
-        // }
+        }        
     }
     /**
      * Handels the moving to left and right, the camera and all the bars.
@@ -240,39 +237,48 @@ class Charakter extends MoveableObject {
     /**
      * Calles the different animations (dead, hurt, idle, walking) , depending on the input of keys and other relevant variables.
      */
-    animate() {
-        console.log('call animate()');
+    animate() {        
         let interv = setInterval(() => {
             this.moveLeftRightCamera();
 
         }, 1000 / 60);
         this.intervalls.push(interv);
-        //graphics walk
-        interv = setInterval(() => {
-            //is death
+        
+        interv = setInterval(() => {           
             if (this.isDeath()) {
                 this.handleDeath();
             } else {
-                if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround() && !this.getHurt) {
-                    //simple walking
-                    this.playAnimation(this.images_walking.length, this.WALKING);
-                    this.walking_sound.play();
-                } else {
-                    if (this.getHurt) {
-                        //painfull face
-                        this.playAnimation(3, this.HURT);
-                    } else {
-                        if (!this.isAboveGround() && this.fallNumber >= 6) {
-                            //idls standing
-                            this.slowedDownIdleAnimation();
-
-                        }
-                    }
-                }
+                this.animationLivingChar();
             }
 
         }, 100);
         this.intervalls.push(interv);
+    }
+
+    simpleWalking(){
+        this.playAnimation(this.images_walking.length, this.WALKING);
+        this.walking_sound.play();
+    }
+
+    /**
+     * handles the animation of a living char
+     */
+    animationLivingChar(){
+        if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround() && !this.getHurt) {
+           this.simpleWalking();
+            
+        } else {
+            if (this.getHurt) {
+                //painfull face
+                this.playAnimation(3, this.HURT);
+            } else {
+                if (!this.isAboveGround() && this.fallNumber >= 6) {
+                    //idls standing
+                    this.slowedDownIdleAnimation();
+
+                }
+            }
+        }
     }
 
     /**
@@ -306,7 +312,6 @@ class Charakter extends MoveableObject {
            
         }
     }
-
     /**     
      * @returns Is the Charakter dead?
      */

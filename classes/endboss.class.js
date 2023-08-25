@@ -29,7 +29,7 @@ class Endboss extends MoveableObject {
 
 
     constructor(x) {
-        console.log('call consructor Boss');
+       
         super().loadImage('..'+this.add+'/img/4_enemie_boss_chicken/1_walk/G1.png');
         this.loadImages(this.images);
         this.loadImages(this.image_dead);
@@ -47,6 +47,40 @@ class Endboss extends MoveableObject {
         this.initMoveableObjects();
     }
 
+    bossStartFight(){
+        this.viewToChar();
+        this.playAnimation(this.image_attack.length, this.ATTACK);
+        this.boss_sound.play();
+    }
+
+    bossWalking(){
+        this.playAnimation(this.images.length, this.ALERT);
+        this.moveRight();
+        this.moveLeft();
+    }
+
+    bossGetHurt(){
+        this.viewToChar();
+        this.playAnimation(this.images_getHurt.length, this.HURT);
+
+    }
+
+/**
+ * Handles the animation of the boss while  he is living
+ */
+    animateBossLiving(){
+        if (this.getHurt) {
+           this.bossGetHurt();
+        }
+        else {
+            if (this.startFight) {
+                this.bossStartFight();
+            }
+            else {
+               this.bossWalking();
+            }
+        }
+    }
 
     /** 
      * Animations of the endboss depending on the state of the endboss.
@@ -56,25 +90,7 @@ class Endboss extends MoveableObject {
         let interv = setInterval(() => {
             //still alive
             if (this.energy > 0) {
-
-                if (this.getHurt) {
-                    this.viewToChar();
-                    this.playAnimation(this.images_getHurt.length, this.HURT);
-
-                }
-                else {
-                    if (this.startFight) {
-                        this.viewToChar();
-                        this.playAnimation(this.image_attack.length, this.ATTACK);
-                        this.boss_sound.play();
-                    }
-                    else {
-                        this.playAnimation(this.images.length, this.ALERT);
-                        this.moveRight();
-                        this.moveLeft();
-                    }
-                }
-
+                this.animateBossLiving();         
             }
             //dead animation
             else {

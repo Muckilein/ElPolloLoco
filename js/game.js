@@ -26,8 +26,7 @@ function init() {
        
     }
     startScreen.classList.add('d-none');
-    canvas.classList.remove('d-none');
-    console.log('new Char');
+    canvas.classList.remove('d-none');    
     world.startGame();
     first = false;
     addTouchListeners();
@@ -98,7 +97,7 @@ function addTouchListeners() {
     document.getElementById('btnR').addEventListener("touchstart", (e) => {
         e.preventDefault();
         keyboard.RIGHT = true;
-        console.log('right');
+       
     });
     document.getElementById('btnR').addEventListener("touchend", (e) => {
         e.preventDefault();
@@ -108,7 +107,7 @@ function addTouchListeners() {
     document.getElementById('btnUP').addEventListener("touchstart", (e) => {
         e.preventDefault();
         keyboard.SPACE = true;
-        console.log('up');
+        
     });
     document.getElementById('btnUP').addEventListener("touchend", (e) => {
         e.preventDefault();
@@ -149,7 +148,7 @@ window.addEventListener('keydown', (event) => {
     if (key == 68) {
         keyboard.D = true;
     }
-    // console.log(key);
+   
 
 
 });

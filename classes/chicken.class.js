@@ -52,8 +52,7 @@ class Chicken extends MoveableObject {
 
     closeSound() {
         this.chicken_sound.pause();
-        this.playSound = false;
-        console.log('close sound');
+        this.playSound = false;       
     }
 
 }

@@ -44,10 +44,9 @@ class World {
      * @returns returns an array [0] because working with empty arrays did not work.
      */
     clearAllIntervalls(intervall) {
-        console.log('clearAllInfervalls ', intervall);
+     
         for (let i = 1; i < intervall.length; i++) {
-            clearInterval(intervall[i]);
-            // console.log('close ' + intervall[i]);
+            clearInterval(intervall[i]);          
         }
         let interv = [0];
         return interv;
@@ -187,6 +186,7 @@ class World {
         this.ctx.restore();
         mo.x = mo.x * -1;
     }
+ 
 
     /**
      * All bottle, that are colliding or out of screen are removes vom this.bottles. The intervalls of the removed bottles are closed.
@@ -202,13 +202,12 @@ class World {
             }
             else {
                 if (col || (bottle.splashCounter < 6 && bottle.splashCounter > 0)) {
-                    bottle.splashCounter--;
-                    console.log('SPLASH');
+                    bottle.splashCounter--;                  
                     bo.push(bottle);
                 }
             }
             if (bottle.splashCounter == 0) {
-                console.log('clear bottle intervals');
+                //after finished splash animation                
                 this.clearAllIntervalls(bottle.intervalls);
             }
         });
@@ -263,34 +262,36 @@ class World {
 
         this.level.enemies.forEach(e => {
             let d = (this.character.y + this.character.height - this.character.offset['bottom']) - e.y
-            if (this.character.isCollidingFromTop(e, d) && !e.jumpedOn) {
-                console.log('colliding top');
+            if (this.character.isCollidingFromTop(e, d) && !e.jumpedOn && this.character.speedY <= 0) {             
                 e.jumpedOn = true;
                 this.character.speedY = 30;
             }
         });
     }
 
+    handleRun(){
+        this.checkJumpOn();
+        this.checkCollisions();
+        this.throwObjects();
+        this.collectingBottles();
+        this.collectCoins();
+        this.bottleCollisionAndRemove();
+        this.stopSounds();
+        this.level.coins.forEach(c => {
+            c.playAnimation(2, 0);
+        });
+    }
+
     /**
-     * When the game runs this method is executed:     * 
+     * When the game runs this method is executed:     
      */
     run() {
         setInterval(() => {
             if (this.gamestarted) {
                 if (!this.gameWin) {
-                    this.checkJumpOn();
-                    this.checkCollisions();
-                    this.throwObjects();
-                    this.collectingBottles();
-                    this.collectCoins();
-                    this.bottleCollisionAndRemove();
-                    this.stopSounds();
-                    this.level.coins.forEach(c => {
-                        c.playAnimation(2, 0);
-                    });
+                  this.handleRun();
                     //if the distance between endboss and char is less than 350 the boss attacs
                     if (this.level.endboss.x - this.character.x < 350) {
-                        console.log('start fight');
                         this.level.endboss.startFight = true;
                     }
                     //if the deadAnimation of the boss is over the game ends
@@ -395,7 +396,7 @@ class World {
         let col = false;
         this.level.enemies.forEach((enemy) => {
             if (bottle.isColliding(enemy) && !enemy.jumpedOn) {
-                console.log('collision with Bottle'); col = true;
+                col = true;
                 enemy.closeSound();
 
             } else {
@@ -403,17 +404,26 @@ class World {
             }
         });
         if (bottle.isColliding(this.level.endboss) && this.level.endboss.energy > 0 && bottle.splashCounter == 6) {
-            console.log('collision with Boss');
-            this.level.endboss.energy -= 35;
-            this.level.endboss.energy = Math.max(this.level.endboss.energy, 0);
-            this.level.endboss.getHurt = true;
-            setTimeout(this.notHurt.bind(this), 1000);
-            console.log('energy', this.level.endboss.energy);
-            if (this.level.endboss.energy > 0) { this.bossbar.nextIndex(); } //up to change
+
+            this.handleBossCollision();
             col = true;
         }
         this.level.enemies = en;
         return col;
+    }
+
+    /**
+     * Boss is colliding with a bottle
+     */
+    handleBossCollision() {
+        this.level.endboss.energy -= 35;
+        this.level.endboss.energy = Math.max(this.level.endboss.energy, 0);
+        this.level.endboss.getHurt = true;
+        setTimeout(this.notHurt.bind(this), 1000);
+
+        if (this.level.endboss.energy > 0) {
+            this.bossbar.nextIndex();
+        }
     }
 
     /**
@@ -429,7 +439,6 @@ class World {
         let pain = false;
         this.level.enemies.forEach((enemy) => {
             if ((this.character.isColliding(enemy) && !enemy.jumpedOn) || (this.character.isColliding(this.level.endboss) && this.level.endboss.energy > 0)) {
-                console.log('collision with Character', this.character.energy);
                 this.character.hit();
                 this.statusbar.setPercentage(this.character.energy);
                 pain = true
