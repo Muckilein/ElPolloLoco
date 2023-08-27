@@ -8,6 +8,7 @@ class DrawableObject {
     currentImage = 0;   //index of the image in the imageCache, that shoud be shound during the animation.
     otherDirection = false; //determinses the direction of the object.
     // offset determined the distances between the real borders of the images and the wanted borderd (for collision)
+    
     offset = {
         top: 0,
         bottom: 0,
@@ -24,7 +25,7 @@ class DrawableObject {
         this.img = new Image();
         this.img.src = path;
     }
-   
+
 
     /**
      * Takes an array with image paths and for each element there i an image object created with that path and is stored in imageCache.
@@ -50,10 +51,10 @@ class DrawableObject {
         }
     }
 
-     /**
-     * Initialized the nessesara values when a new DrawableObject is created.
-     */
-     initDrawableObjects() {
+    /**
+    * Initialized the nessesara values when a new DrawableObject is created.
+    */
+    initDrawableObjects() {
         this.currentImage = 0;
         this.otherDirection = false;
     }

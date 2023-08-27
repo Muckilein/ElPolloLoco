@@ -42,8 +42,10 @@
 
             <div id="btnContainer" class="d-none">
                 <div class="btn">
+                    <div id="mute" class="btnSteuern" style="display: flex;align-items: center;"> <img src="../img/mute.png" style="height:20px;" onclick="enableSound(0,'mute','volume')"></div>
+                    <div id="volume" class="btnSteuern d-none" style="display: flex;align-items: center;" > <img src="../img/volume.png" style="height:20px;" onclick="enableSound(0.1,'volume','mute')"></div>
                     <button id="btnL" class="btnSteuern">L</button>
-                    <button id="btnR" class="btnSteuern">R</button>
+                    <button id="btnR" class="btnSteuern">R</button>                    
                 </div>
                 <button id="buttonFull" onclick="goFullscreen()" class="buttonSizeScreen">Fullscreen</button>
                 <button id="buttonSmall" onclick="closeFullscreen()" class="d-none buttonSizeScreen">

@@ -37,6 +37,8 @@ class World {
 
     }
 
+   
+
     /**
      * 
      * @param {number Arrray} intervall Array with the numbers of the intervals, that shell be closen.
@@ -44,9 +46,9 @@ class World {
      * @returns returns an array [0] because working with empty arrays did not work.
      */
     clearAllIntervalls(intervall) {
-     
+
         for (let i = 1; i < intervall.length; i++) {
-            clearInterval(intervall[i]);          
+            clearInterval(intervall[i]);
         }
         let interv = [0];
         return interv;
@@ -186,7 +188,7 @@ class World {
         this.ctx.restore();
         mo.x = mo.x * -1;
     }
- 
+
 
     /**
      * All bottle, that are colliding or out of screen are removes vom this.bottles. The intervalls of the removed bottles are closed.
@@ -202,7 +204,7 @@ class World {
             }
             else {
                 if (col || (bottle.splashCounter < 6 && bottle.splashCounter > 0)) {
-                    bottle.splashCounter--;                  
+                    bottle.splashCounter--;
                     bo.push(bottle);
                 }
             }
@@ -262,14 +264,14 @@ class World {
 
         this.level.enemies.forEach(e => {
             let d = (this.character.y + this.character.height - this.character.offset['bottom']) - e.y
-            if (this.character.isCollidingFromTop(e, d) && !e.jumpedOn && this.character.speedY <= 0) {             
+            if (this.character.isCollidingFromTop(e, d) && !e.jumpedOn && this.character.speedY <= 0) {
                 e.jumpedOn = true;
                 this.character.speedY = 30;
             }
         });
     }
 
-    handleRun(){
+    handleRun() {
         this.checkJumpOn();
         this.checkCollisions();
         this.throwObjects();
@@ -289,7 +291,7 @@ class World {
         setInterval(() => {
             if (this.gamestarted) {
                 if (!this.gameWin) {
-                  this.handleRun();
+                    this.handleRun();
                     //if the distance between endboss and char is less than 350 the boss attacs
                     if (this.level.endboss.x - this.character.x < 350) {
                         this.level.endboss.startFight = true;

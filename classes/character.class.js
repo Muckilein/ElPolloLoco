@@ -51,7 +51,7 @@ class Charakter extends MoveableObject {
         this.y = 160;
         // this.x = 70;
         this.x = 70;
-        this.walking_sound.volume = 0.1;
+        this.walking_sound.volume =0.1;
         this.initializeValues();
         this.initMoveableObjects();
         this.offset = {
@@ -256,7 +256,7 @@ class Charakter extends MoveableObject {
     }
 
     simpleWalking(){
-        this.playAnimation(this.images_walking.length, this.WALKING);
+        this.playAnimation(this.images_walking.length, this.WALKING);      
         this.walking_sound.play();
     }
 

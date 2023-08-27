@@ -49,7 +49,7 @@ class ThrowableObject extends MoveableObject {
         }
         if (this.splashCounter == this.image_splash.length) {
             // bottle rotate
-            this.x += 5 * direct;
+            this.x += 10 * direct;
             this.playAnimation(this.image_rotate.length, 0);
         }
         else {

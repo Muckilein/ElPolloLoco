@@ -34,6 +34,14 @@ function init() {
 
 }
 
+function enableSound(num,out,show) {
+    world.character.walking_sound.volume = num;
+    world.level.enemies.forEach(e => { e.chicken_sound.volume=num*2;});
+    world.level.endboss.boss_sound.volume=num ;
+    document.getElementById(out).classList.add('d-none'); 
+    document.getElementById(show).classList.remove('d-none');        
+}
+
 function callInitFirstTime() {
     world = new World(winScreen,explanation,buttonContainer,gameOver, startScreen, canvas, keyboard);
     canvas.addEventListener("click", function (e) {

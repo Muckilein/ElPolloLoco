@@ -41,6 +41,11 @@ h2 {
 
     margin-block-start: 15px;
     margin-block-end: 15px;
+    font-size: 32px;
+}
+
+#tip{
+    font-size: 64px;
 }
 
 .btn {
@@ -73,6 +78,7 @@ h2 {
     border-radius: 15px;
     padding: 10px 20px 10px 20px;
     cursor: pointer;
+    border:solid black 1px;
 }
 
 .fullHeight {
@@ -124,6 +130,8 @@ display:none;
 }
 }
 
+
+
 @media only screen and (max-width: 720px) {
     canvas {
         width: 100%;
@@ -146,6 +154,10 @@ display:none;
     #buttonFull {
         display: none;
     }
+
+    h1{
+        display:none;
+     }      
 
 
 }

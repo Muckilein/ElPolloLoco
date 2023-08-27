@@ -23,6 +23,13 @@ class MoveableObject extends DrawableObject {
         this.energy = 100;
     }
 
+/**
+ * Checks, if the given moveableObject is colliding with the character
+ * 
+ * @param {MoveableObject} mo The MoveableObject with which we want to check  a collision from top
+ * @param {number} d          Difference between character.y and mo.y
+ * @returns 
+ */
     isCollidingFromTop(mo,d){
         return ((this.x+this.offset.left< mo.x+mo.offset.left && this.x+this.width-this.offset.right >mo.x+mo.offset.left)
         ||(this.x+this.width-this.offset.right>mo.x+mo.width-mo.offset.right && this.x+this.offset.left<mo.width-mo.offset.right)
@@ -53,23 +60,30 @@ class MoveableObject extends DrawableObject {
     }
 
     /**
+     * Handles the falling down of an object till the ground
+     */
+ fallingDown(){
+    this.y -= this.speedY;
+    this.speedY -= this.accleration;
+    if (!(this instanceof ThrowableObject)) {
+        this.y = Math.min(460 - this.height, this.y);
+    }else{
+        //splashed bottle is no falling any more
+        if(this.splashCounter<6){
+            this.speedY+=this.accleration;
+            this.y+=this.speedY;
+        }
+    }      
+ }
+
+    /**
      * Applys gravity to a Moveable Object, as long a it is not overwritten in a more specific class.
      */
     applyGravity() {
         let interv = setInterval(() => {
 
             if (this.isAboveGround() && (this.speedY <= 0)) {
-
-                this.y -= this.speedY;
-                this.speedY -= this.accleration;
-                if (!(this instanceof ThrowableObject)) {
-                    this.y = Math.min(460 - this.height, this.y);
-                }else{
-                    if(this.splashCounter<6){
-                        this.speedY+=this.accleration;
-                        this.y+=this.speedY;
-                    }
-                }             
+                this.fallingDown();       
             }
 
         }, 1000 / 25);
