@@ -3,6 +3,13 @@ canvas {
     display: block;
 }
 
+#screen {
+    display: flex;
+    justify-content: center;  
+    overflow-x: hidden;   
+
+}
+
 body {
     margin: 0;
     display: flex;
@@ -35,6 +42,7 @@ h1 {
     text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
     margin-block-start: 15px;
     margin-block-end: 15px;
+    text-align: center;
 }
 
 h2 {
@@ -44,7 +52,7 @@ h2 {
     font-size: 32px;
 }
 
-#tip{
+#tip {
     font-size: 64px;
 }
 
@@ -56,7 +64,7 @@ h2 {
 #btnContainer {
     display: flex;
     justify-content: space-between;
-    /* width:720px; */
+    width: 100%;
     margin-top: 10px;
     position: absolute;
     bottom: 0px;
@@ -65,20 +73,13 @@ h2 {
 
 }
 
-#screen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-    overflow-x: hidden;
-}
 
 .btnSteuern {
     background-color: orange;
     border-radius: 15px;
     padding: 10px 20px 10px 20px;
     cursor: pointer;
-    border:solid black 1px;
+    border: solid black 1px;
 }
 
 .fullHeight {
@@ -113,7 +114,8 @@ h2 {
     width: 100%;
     height: 100%;
 }
-#youWonScreen{
+
+#youWonScreen {
 
     position: absolute;
     top: 0;
@@ -124,14 +126,12 @@ h2 {
     width: 100%;
     height: 100%;
 }
+
 @media (min-width: 720px) {
-#tip{
-display:none;
+    #tip {
+        display: none;
+    }
 }
-}
-
-
-
 @media only screen and (max-width: 720px) {
     canvas {
         width: 100%;
@@ -155,15 +155,19 @@ display:none;
         display: none;
     }
 
-    h1{
-        display:none;
-     }      
+    h1 {
+        display: none;
+    }
 
 
 }
 
 @media only screen and (max-height: 480px) {
     canvas {
+        height: 100vh;
+    }
+
+    #screen {
         height: 100vh;
     }
 
@@ -190,6 +194,7 @@ display:none;
     }
 
 }
+
 @font-face {
 
     font-family: 'zabars';
@@ -197,4 +202,3 @@ display:none;
     /* src: url('../El%20Pollo%20Loco/fonts/zabars.ttf') format('woff2'); */
 
 }
-

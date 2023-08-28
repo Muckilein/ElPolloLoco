@@ -33,19 +33,19 @@
             style="cursor:pointer" onclick="init()">
         <!-- <img id="gameOverScreen" class="d-none" src="img/9_intro_outro_screens/game_over/example.png" width="960px"
     height="540px" style="cursor:pointer" onclick="init()"> -->
-        <div id="screen">
-            <div width="720px" height="480px" style="position: relative;">
+        <div  height="480px" id="screen">
+           <div style="width:fit-content;position: relative;" >
+            <div >
                 <canvas id="canvas" width="720px" height="480px" class="d-none"></canvas>
                 <img id="gameOverScreen" class="d-none" src="img/9_intro_outro_screens/game_over/oh no you lost!.png" >
                 <img id="youWonScreen" class="d-none" src="img/9_intro_outro_screens/game_over/game over!.png" >
             </div>
-
             <div id="btnContainer" class="d-none">
-                <div class="btn">
-                    <div id="mute" class="btnSteuern" style="display: flex;align-items: center;"> <img src="../img/mute.png" style="height:20px;" onclick="enableSound(0,'mute','volume')"></div>
-                    <div id="volume" class="btnSteuern d-none" style="display: flex;align-items: center;" > <img src="../img/volume.png" style="height:20px;" onclick="enableSound(0.1,'volume','mute')"></div>
+                <div class="btn">                   
                     <button id="btnL" class="btnSteuern">L</button>
-                    <button id="btnR" class="btnSteuern">R</button>                    
+                    <button id="btnR" class="btnSteuern">R</button>   
+                     <div id="mute" class="btnSteuern" style="display: flex;align-items: center;" onclick="enableSound(0,'mute','volume')"> <img src="../img/mute.png" style="height:20px;" ></div>
+                    <div id="volume" class="btnSteuern d-none" style="display: flex;align-items: center;" onclick="enableSound(0.1,'volume','mute')" > <img src="../img/volume.png" style="height:20px;" ></div>                 
                 </div>
                 <button id="buttonFull" onclick="goFullscreen()" class="buttonSizeScreen">Fullscreen</button>
                 <button id="buttonSmall" onclick="closeFullscreen()" class="d-none buttonSizeScreen">
@@ -55,6 +55,7 @@
                     <button id="btnT" class="btnSteuern">T</button>
                 </div>
             </div>
+           </div>
 
         </div>
         <h2>How to play the game</h2>

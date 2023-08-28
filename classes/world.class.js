@@ -20,6 +20,7 @@ class World {
     character = new Charakter();
     firstGame = true;
     gamestarted = false;
+    fullScreen = false;
 
 
     constructor(winScreen, explanation, buttonContainer, gameOver, startScreen, canvas, keyboard) {
@@ -37,7 +38,7 @@ class World {
 
     }
 
-   
+
 
     /**
      * 
@@ -216,23 +217,32 @@ class World {
         this.bottles = bo;
     }
 
+    delFullscreen(){
+        if (this.fullScreen) {
+            canvas.classList.remove('fullHeight');
+            buttonContainer.classList.remove('fullWidth');
+            this.fullScreen = false;
+        }
+    }
+
     /**
      * When wie loose the game
      */
     gameLose() {
+        this.delFullscreen();
         this.endGame();
         this.gamestarted = false;
         this.gameOver.classList.remove('d-none');
         this.buttonContainer.classList.add('d-none');
         if (window.innerWidth <= 720) { this.explanation.classList.add('d-none'); }
         setTimeout(this.backToScreenFfromGameOver.bind(this), 2000);
-
     }
 
     /**
      * When you won the game.
      */
     gameWins() {
+        this.delFullscreen();
         this.gameWin = true;
         this.endGame();
         this.gamestarted = false;

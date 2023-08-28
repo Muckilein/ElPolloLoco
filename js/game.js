@@ -9,13 +9,14 @@ let gameOver;
 let winScreen;
 let explanation;
 
+
 function init() {
 
     canvas = document.getElementById('canvas');
     startScreen = document.getElementById('startScreen');
     gameOver = document.getElementById('gameOverScreen');
     winScreen = document.getElementById('youWonScreen');
-    explanation= document.getElementById('explanation');
+    explanation = document.getElementById('explanation');
     buttonContainer = document.getElementById('btnContainer');
     buttonContainer.classList.remove('d-none');
     if (first) {
@@ -23,27 +24,28 @@ function init() {
 
     } else {
         world.level = newLevel1();
-       
+
     }
     startScreen.classList.add('d-none');
-    canvas.classList.remove('d-none');    
+    canvas.classList.remove('d-none');
     world.startGame();
     first = false;
     addTouchListeners();
     screen = document.getElementById('screen');
+    closeFullscreen();
 
 }
 
-function enableSound(num,out,show) {
+function enableSound(num, out, show) {
     world.character.walking_sound.volume = num;
-    world.level.enemies.forEach(e => { e.chicken_sound.volume=num*2;});
-    world.level.endboss.boss_sound.volume=num ;
-    document.getElementById(out).classList.add('d-none'); 
-    document.getElementById(show).classList.remove('d-none');        
+    world.level.enemies.forEach(e => { e.chicken_sound.volume = num * 2; });
+    world.level.endboss.boss_sound.volume = num;
+    document.getElementById(out).classList.add('d-none');
+    document.getElementById(show).classList.remove('d-none');
 }
 
 function callInitFirstTime() {
-    world = new World(winScreen,explanation,buttonContainer,gameOver, startScreen, canvas, keyboard);
+    world = new World(winScreen, explanation, buttonContainer, gameOver, startScreen, canvas, keyboard);
     canvas.addEventListener("click", function (e) {
         let cRect = canvas.getBoundingClientRect();        // Gets CSS pos, and width/height
         let canvasX = Math.round(e.clientX - cRect.left);  // Subtract the 'left' of the canvas 
@@ -59,6 +61,7 @@ function goFullscreen() {
     canvas.classList.add('fullHeight');
     document.getElementById('btnContainer').classList.add('fullWidth');
     goFull(screen);
+    world.fullScreen = true;
 }
 
 function closeFullscreen() {
@@ -67,6 +70,7 @@ function closeFullscreen() {
     canvas.classList.remove('fullHeight');
     document.getElementById('btnContainer').classList.remove('fullWidth');
     closeFull();
+    world.fullScreen = false;
 }
 
 function closeFull() {
@@ -81,7 +85,7 @@ function closeFull() {
 
 function goFull(elem) {
     if (elem.requestFullscreen) {
-        elem.requestFullscreen();       
+        elem.requestFullscreen();
     } else if (elem.webkitRequestFullscreen) { /* Safari */
         elem.webkitRequestFullscreen();
     } else if (elem.msRequestFullscreen) { /* IE11 */
@@ -105,7 +109,7 @@ function addTouchListeners() {
     document.getElementById('btnR').addEventListener("touchstart", (e) => {
         e.preventDefault();
         keyboard.RIGHT = true;
-       
+
     });
     document.getElementById('btnR').addEventListener("touchend", (e) => {
         e.preventDefault();
@@ -115,7 +119,7 @@ function addTouchListeners() {
     document.getElementById('btnUP').addEventListener("touchstart", (e) => {
         e.preventDefault();
         keyboard.SPACE = true;
-        
+
     });
     document.getElementById('btnUP').addEventListener("touchend", (e) => {
         e.preventDefault();
@@ -156,7 +160,7 @@ window.addEventListener('keydown', (event) => {
     if (key == 68) {
         keyboard.D = true;
     }
-   
+
 
 
 });
