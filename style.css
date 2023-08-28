@@ -16,8 +16,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-image: url('../img/desert.png');
-    /* background-image: url('../El%20Pollo%20Loco/img/desert.png'); */
+    /* background-image: url('../img/desert.png'); */
+    background-image: url('../El%20Pollo%20Loco/img/desert.png');
     background-position: center;
     font-family: 'zabars', 'Raleway', sans-serif;
     position: relative;
@@ -54,6 +54,7 @@ h2 {
 
 #tip {
     font-size: 64px;
+    text-align: center;
 }
 
 .btn {
@@ -90,9 +91,18 @@ h2 {
     width: 100%;
 }
 
+.btnStart{
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    width: 250px;
+    font-size: 1.5em;
+    transform: translate(-50%, -50%);
+}
+
 #explanation {
     display: flex;
-    justify-content: space-between;
+    gap: 50px;
     width: 720px;
 }
 
@@ -138,12 +148,7 @@ h2 {
     }
 
     #explanation {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        justify-content: flex-start;
-        gap: 50px;
+       display:none;
     }
 
 
@@ -198,7 +203,7 @@ h2 {
 @font-face {
 
     font-family: 'zabars';
-    src: url('../fonts/zabars.ttf') format('woff2');
-    /* src: url('../El%20Pollo%20Loco/fonts/zabars.ttf') format('woff2'); */
+    /* src: url('../fonts/zabars.ttf') format('woff2'); */
+    src: url('../El%20Pollo%20Loco/fonts/zabars.ttf') format('woff2');
 
 }

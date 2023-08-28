@@ -1,6 +1,6 @@
 class Chicken extends MoveableObject {
-    // add ='/El%20Pollo%20Loco';
-    add = '';
+    add ='/El%20Pollo%20Loco';
+    // add = '';
     images = ['..' + this.add + '/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png', '..' + this.add + '/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png', '..' + this.add + '/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png'];
     image_dead = ['..' + this.add + '/img/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
     chicken_sound = new Audio('..' + this.add + '/audio/chicken.mp3');

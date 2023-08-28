@@ -8,6 +8,10 @@ let startScreen;
 let gameOver;
 let winScreen;
 let explanation;
+let buttonStart;
+let numV = 0.1;
+let outV='volume';
+let showV='mute';
 
 
 function init() {
@@ -18,21 +22,29 @@ function init() {
     winScreen = document.getElementById('youWonScreen');
     explanation = document.getElementById('explanation');
     buttonContainer = document.getElementById('btnContainer');
+    buttonStart= document.getElementById('startBtn');
+    buttonStart.classList.add('d-none');
     buttonContainer.classList.remove('d-none');
     if (first) {
         callInitFirstTime();
 
     } else {
-        world.level = newLevel1();
+        world.level = newLevel1();       
 
     }
     startScreen.classList.add('d-none');
     canvas.classList.remove('d-none');
-    world.startGame();
-    first = false;
+    world.startGame();  
     addTouchListeners();
     screen = document.getElementById('screen');
-    closeFullscreen();
+    document.getElementById('buttonFull').classList.remove('d-none');
+    document.getElementById('buttonSmall').classList.add('d-none');
+   if(!first){
+    // enableSound(numV, outV, showV);
+    setTimeout(function(){enableSound(numV,outV,showV);},125);
+   }
+   first = false;
+    
 
 }
 
@@ -42,10 +54,13 @@ function enableSound(num, out, show) {
     world.level.endboss.boss_sound.volume = num;
     document.getElementById(out).classList.add('d-none');
     document.getElementById(show).classList.remove('d-none');
+    numV = num;
+    outV = out;
+    showV = show;
 }
 
 function callInitFirstTime() {
-    world = new World(winScreen, explanation, buttonContainer, gameOver, startScreen, canvas, keyboard);
+    world = new World(buttonStart,winScreen, explanation, buttonContainer, gameOver, startScreen, canvas, keyboard);
     canvas.addEventListener("click", function (e) {
         let cRect = canvas.getBoundingClientRect();        // Gets CSS pos, and width/height
         let canvasX = Math.round(e.clientX - cRect.left);  // Subtract the 'left' of the canvas 

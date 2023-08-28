@@ -1,6 +1,6 @@
 class Endboss extends MoveableObject {
-    // add ='/El%20Pollo%20Loco';
-    add ='';
+    add ='/El%20Pollo%20Loco';
+    // add ='';
     images = ['..'+this.add+'/img/4_enemie_boss_chicken/2_alert/G5.png',
         '..'+this.add+'/img/4_enemie_boss_chicken/2_alert/G6.png',
         '..'+this.add+'/img/4_enemie_boss_chicken/2_alert/G7.png',

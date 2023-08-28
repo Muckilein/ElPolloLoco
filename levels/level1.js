@@ -8,8 +8,8 @@
 //         , new ThrowableObject(1600, 450), new ThrowableObject(1800, 450), new ThrowableObject(2000, 450)]);
 
 // bgLevel1(level1);
-// let add= '/El%20Pollo%20Loco';
-let add='';
+let add= '/El%20Pollo%20Loco';
+// let add='';
 function newLevel1() {
    
    let level= new Level([new Chicken(), new Chicken(), new Chicken()], [new Cloud('..'+add+'/img/5_background/layers/4_clouds/1.png', 50)], [

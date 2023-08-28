@@ -1,6 +1,6 @@
 class ThrowableObject extends MoveableObject {
-    // add ='/El%20Pollo%20Loco';
-    add = '';
+    add ='/El%20Pollo%20Loco';
+    // add = '';
     image = ['' + this.add + '/img/6_salsa_bottle/salsa_bottle.png'];
     image_rotate = ['..' + this.add + '/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png', '..' + this.add + '/img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
     '..' + this.add + '/img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png', '..' + this.add + '/img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png']
@@ -49,7 +49,7 @@ class ThrowableObject extends MoveableObject {
         }
         if (this.splashCounter == this.image_splash.length) {
             // bottle rotate
-            this.x += 10 * direct;
+            this.x += 20 * direct;
             this.playAnimation(this.image_rotate.length, 0);
         }
         else {

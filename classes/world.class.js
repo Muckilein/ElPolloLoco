@@ -17,13 +17,14 @@ class World {
     winScreen;
     buttonContainer;
     explanation;
+    buttonStart;
     character = new Charakter();
     firstGame = true;
     gamestarted = false;
     fullScreen = false;
 
 
-    constructor(winScreen, explanation, buttonContainer, gameOver, startScreen, canvas, keyboard) {
+    constructor(buttonStart, winScreen, explanation, buttonContainer, gameOver, startScreen, canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.startScreen = startScreen;
@@ -32,6 +33,7 @@ class World {
         this.keyboard = keyboard;
         this.buttonContainer = buttonContainer;
         this.explanation = explanation;
+        this.buttonStart = buttonStart;
         this.draw();
         this.setWorld();
         this.run();
@@ -132,7 +134,7 @@ class World {
         this.addArrayToMap(this.level.coins);
         this.addImageToMap(this.character);
         this.addImageToMap(this.statusbar);
-        this.addImageToMap(this.bossbar);
+        if (this.level.endboss.startFight) { this.addImageToMap(this.bossbar); }
         this.addImageToMap(this.bottlebar);
         this.addImageToMap(this.coinbar);
         this.ctx.translate(-1 * this.camera_x, 0);
@@ -217,7 +219,7 @@ class World {
         this.bottles = bo;
     }
 
-    delFullscreen(){
+    delFullscreen() {
         if (this.fullScreen) {
             canvas.classList.remove('fullHeight');
             buttonContainer.classList.remove('fullWidth');
@@ -232,10 +234,10 @@ class World {
         this.delFullscreen();
         this.endGame();
         this.gamestarted = false;
-        this.gameOver.classList.remove('d-none');
+        this.gameOver.classList.remove('d-none');        
         this.buttonContainer.classList.add('d-none');
         if (window.innerWidth <= 720) { this.explanation.classList.add('d-none'); }
-        setTimeout(this.backToScreenFfromGameOver.bind(this), 2000);
+        setTimeout(this.backToScreenFfromGameOver.bind(this), 3000);
     }
 
     /**
@@ -248,7 +250,7 @@ class World {
         this.gamestarted = false;
         this.winScreen.classList.remove('d-none');
         this.buttonContainer.classList.add('d-none');
-        setTimeout(this.backToScreen.bind(this), 2000);
+        setTimeout(this.backToScreen.bind(this), 3000);
     }
 
     /**
@@ -328,6 +330,7 @@ class World {
     backToScreenFfromGameOver() {
         this.startScreen.classList.remove('d-none');
         this.explanation.classList.remove('d-none');
+        this.buttonStart.classList.remove('d-none');
         this.canvas.classList.add('d-none');
         this.gameWin = false;
         this.gameOver.classList.add('d-none');
@@ -339,6 +342,7 @@ class World {
     */
     backToScreen() {
         this.startScreen.classList.remove('d-none');
+        this.buttonStart.classList.remove('d-none');
         this.explanation.classList.remove('d-none');
         this.canvas.classList.add('d-none');
         this.buttonContainer.classList.add('d-none');

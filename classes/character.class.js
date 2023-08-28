@@ -1,6 +1,6 @@
 class Charakter extends MoveableObject {
-    // add ='/El%20Pollo%20Loco';
-    add ='';
+    add ='/El%20Pollo%20Loco';
+    // add ='';
     images_walking = ['..'+this.add+'/img/2_character_pepe/2_walk/W-21.png', '..'+this.add+'/img/2_character_pepe/2_walk/W-22.png', '..'+this.add+'/img/2_character_pepe/2_walk/W-23.png', '..'+this.add+'/img/2_character_pepe/2_walk/W-24.png',
         '..'+this.add+'/img/2_character_pepe/2_walk/W-25.png', '..'+this.add+'/img/2_character_pepe/2_walk/W-26.png'];
     images_jumping = ['..'+this.add+'/img/2_character_pepe/3_jump/J-31.png',
