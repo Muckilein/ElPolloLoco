@@ -27,7 +27,6 @@ class Endboss extends MoveableObject {
     ATTACK = this.HURT + this.images_getHurt.length;
 
 
-
     constructor(x) {
        
         super().loadImage('..'+this.add+'/img/4_enemie_boss_chicken/1_walk/G1.png');

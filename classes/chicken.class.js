@@ -20,15 +20,12 @@ class Chicken extends MoveableObject {
         this.initMoveableObjects();
         this.playSound = false;
 
-
     }
 
     /**
      * Animation of the Chickens. Moves only left.
      */
-    animate() {
-
-        // this.moveLeft();
+    animate() {     
 
         let interv = setInterval(() => {
             if (!this.jumpedOn) {

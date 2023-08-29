@@ -32,6 +32,7 @@ class ThrowableObject extends MoveableObject {
             this.x -= this.width;
         }
         let interv = setInterval(() => {
+
             this.handleThrow(direct);
 
         }, 50);
@@ -39,9 +40,11 @@ class ThrowableObject extends MoveableObject {
 
     }
 
-
-    handleThrow(direct) {
-       
+/**Handles whe the character is throwing a bottle
+ * 
+ * @param {number} direct determindes the direction, where the bottle are thrown
+ */
+    handleThrow(direct) {       
         if (this.speedY > 0) {
             //thow up
             this.y -= this.speedY;

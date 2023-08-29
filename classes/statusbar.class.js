@@ -1,7 +1,5 @@
 class StatusBar extends DrawableObject {
-    images = [];
-   
-
+    images = []; 
     percentage = 100;
     index = 0;
     constructor(x, y, images, pers) {
@@ -12,8 +10,6 @@ class StatusBar extends DrawableObject {
         this.x = x;
         this.y = y;
         this.images = images;
-
-
     }
 
     /**

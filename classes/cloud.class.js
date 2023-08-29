@@ -5,16 +5,14 @@ class Cloud extends MoveableObject {
         this.width = 600;
         this.x = x;
         this.height = this.width * 0.56;
-        this.y = 40;
-      
+        this.y = 40;      
     }
 
     /**
      * Clound moves left.
      */
     animate(){        
-     this.moveLeft();
-       
+     this.moveLeft();       
     }
 
  

@@ -26,7 +26,6 @@ class DrawableObject {
         this.img.src = path;
     }
 
-
     /**
      * Takes an array with image paths and for each element there i an image object created with that path and is stored in imageCache.
      * @param {array} arr  Array that contains the paths of all images that shell be used for the animations

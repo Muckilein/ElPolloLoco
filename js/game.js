@@ -10,48 +10,64 @@ let winScreen;
 let explanation;
 let buttonStart;
 let numV = 0.1;
-let outV='volume';
-let showV='mute';
+let outV = 'volume';
+let showV = 'mute';
 
 
 function init() {
+    storeObjectsInVariables();
+    if (first) {
+        callInitFirstTime();
+    } else {
+        world.level = newLevel1();
+    }
+    blendInOutObjects();
+    world.startGame();
+    addTouchListeners();
+    document.getElementById('buttonFull').classList.remove('d-none');
+    document.getElementById('buttonSmall').classList.add('d-none');
+    if (!first) {
+        // enableSound(numV, outV, showV);
+        setTimeout(function () { enableSound(numV, outV, showV); }, 125);
+    }
+    first = false;
+}
 
+/**
+ * Blends in and out some objects (startbutton, smallButtons) for the start of the game
+ */
+function blendInOutObjects() {
+    buttonStart.classList.add('d-none');
+    buttonContainer.classList.remove('d-none');
+    startScreen.classList.add('d-none');
+    canvas.classList.remove('d-none');
+}
+
+/**
+ * Stores several html Objects in variables
+ */
+function storeObjectsInVariables() {
     canvas = document.getElementById('canvas');
     startScreen = document.getElementById('startScreen');
     gameOver = document.getElementById('gameOverScreen');
     winScreen = document.getElementById('youWonScreen');
     explanation = document.getElementById('explanation');
     buttonContainer = document.getElementById('btnContainer');
-    buttonStart= document.getElementById('startBtn');
-    buttonStart.classList.add('d-none');
-    buttonContainer.classList.remove('d-none');
-    if (first) {
-        callInitFirstTime();
-
-    } else {
-        world.level = newLevel1();       
-
-    }
-    startScreen.classList.add('d-none');
-    canvas.classList.remove('d-none');
-    world.startGame();  
-    addTouchListeners();
+    buttonStart = document.getElementById('startBtn');
     screen = document.getElementById('screen');
-    document.getElementById('buttonFull').classList.remove('d-none');
-    document.getElementById('buttonSmall').classList.add('d-none');
-   if(!first){
-    // enableSound(numV, outV, showV);
-    setTimeout(function(){enableSound(numV,outV,showV);},125);
-   }
-   first = false;
-    
-
 }
-
+/**
+ * Sets the sound on or of
+ * 
+ * @param {Number} num   volume  0 sound of  0.1 sound on
+ * @param {String} out   sound button that shell blend out
+ * @param {String} show  sound button that shell belnd in
+ */
 function enableSound(num, out, show) {
     world.character.walking_sound.volume = num;
     world.level.enemies.forEach(e => { e.chicken_sound.volume = num * 2; });
     world.level.endboss.boss_sound.volume = num;
+    world.sound.volume = num;
     document.getElementById(out).classList.add('d-none');
     document.getElementById(show).classList.remove('d-none');
     numV = num;
@@ -59,8 +75,11 @@ function enableSound(num, out, show) {
     showV = show;
 }
 
+/**
+ * Creates World and a Listener for the positions.
+ */
 function callInitFirstTime() {
-    world = new World(buttonStart,winScreen, explanation, buttonContainer, gameOver, startScreen, canvas, keyboard);
+    world = new World(buttonStart, winScreen, explanation, buttonContainer, gameOver, startScreen, canvas, keyboard);
     canvas.addEventListener("click", function (e) {
         let cRect = canvas.getBoundingClientRect();        // Gets CSS pos, and width/height
         let canvasX = Math.round(e.clientX - cRect.left);  // Subtract the 'left' of the canvas 
@@ -70,6 +89,9 @@ function callInitFirstTime() {
     });
 }
 
+/**
+ * Goes to fullscreen.
+ */
 function goFullscreen() {
     document.getElementById('buttonFull').classList.add('d-none');
     document.getElementById('buttonSmall').classList.remove('d-none');
@@ -79,6 +101,9 @@ function goFullscreen() {
     world.fullScreen = true;
 }
 
+/**
+ * Goes to smallscreen
+ */
 function closeFullscreen() {
     document.getElementById('buttonFull').classList.remove('d-none');
     document.getElementById('buttonSmall').classList.add('d-none');
@@ -88,6 +113,9 @@ function closeFullscreen() {
     world.fullScreen = false;
 }
 
+/**
+ * closed the fullscreen. I called by closeFullScreen()
+ */
 function closeFull() {
     if (document.exitFullscreen) {
         document.exitFullscreen();
@@ -98,6 +126,9 @@ function closeFull() {
     }
 }
 
+/**
+ * Opens the fullscreen. I called by goFullScreen()
+ */
 function goFull(elem) {
     if (elem.requestFullscreen) {
         elem.requestFullscreen();
@@ -152,7 +183,9 @@ function addTouchListeners() {
 }
 
 
-
+/**
+ * Sets "keyboard" to the right keys, when a key is pressed.
+ */
 window.addEventListener('keydown', (event) => {
 
     let key = event['keyCode'];
@@ -179,6 +212,10 @@ window.addEventListener('keydown', (event) => {
 
 
 });
+
+/**
+ * Sets "keyboard" to the right keys, when the key is released.
+ */
 window.addEventListener('keyup', (event) => {
 
     let key = event['keyCode'];

@@ -22,6 +22,8 @@ class World {
     firstGame = true;
     gamestarted = false;
     fullScreen = false;
+    timeLast = Date.now();
+    sound= new Audio('../El%20Pollo%20Loco/audio/sound.mp3');
 
 
     constructor(buttonStart, winScreen, explanation, buttonContainer, gameOver, startScreen, canvas, keyboard) {
@@ -37,10 +39,9 @@ class World {
         this.draw();
         this.setWorld();
         this.run();
-
+        this.sound.play();
+        this.sound.volume=0.1;
     }
-
-
 
     /**
      * 
@@ -315,11 +316,8 @@ class World {
                     //if the Chakater dead animation is over the game ands
                     if (this.character.playDeath == 0) {
                         this.gameLose();
-
                     }
-
                 }
-
             }
         }, 125);
     }
@@ -385,9 +383,13 @@ class World {
         this.bottlesInWorld = bo;
     }
 
+
+
     /**Handles, when we press button D. This creates a new ThrowableObject and throws it. */
     throwObjects() {
-        if (this.keyboard.D && this.character.amountBottles > 0) {
+        let time= Date.now();
+        if (this.keyboard.D && this.character.amountBottles > 0 && (time - this.timeLast)>1000) {
+            this.timeLast = Date.now();
             let bottle = new ThrowableObject(this.character.x, this.character.y + 100);
             this.character.amountBottles--;
             this.bottlebar.setPercentage(this.character.amountBottles * 20);
@@ -463,8 +465,6 @@ class World {
         this.character.getHurt = pain;
 
     }
-
-
 
 }
 
