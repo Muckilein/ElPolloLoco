@@ -26,10 +26,10 @@ class MoveableObject extends DrawableObject {
 /**
  * Checks, if the given moveableObject is colliding with the character
  * 
- * @param {MoveableObject} mo The MoveableObject with which we want to check  a collision from top
- * @param {number} d          Difference between character.y and mo.y
- * @returns 
- */
+ * @param {Object} mo The MoveableObject with which we want to check  a collision from top
+ * @param {number} d  Difference between character.y and mo.y
+ * @returns           If there is a collision from top       
+ */ 
     isCollidingFromTop(mo,d){
         return ((this.x+this.offset.left< mo.x+mo.offset.left && this.x+this.width-this.offset.right >mo.x+mo.offset.left)
         ||(this.x+this.width-this.offset.right>mo.x+mo.width-mo.offset.right && this.x+this.offset.left<mo.width-mo.offset.right)

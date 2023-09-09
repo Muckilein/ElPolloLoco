@@ -1,4 +1,32 @@
-class World {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/world.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/world.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>class World {
 
     level = newLevel1();
     statusbar = this.level.statusbar;
@@ -51,7 +79,7 @@ class World {
      */
     clearAllIntervalls(intervall) {
 
-        for (let i = 1; i < intervall.length; i++) {
+        for (let i = 1; i &lt; intervall.length; i++) {
             clearInterval(intervall[i]);
         }
         let interv = [0];
@@ -203,11 +231,11 @@ class World {
         this.bottles.forEach(bottle => {
             col = this.checkCollisionBottle(bottle);
             // if the bottle leaves the screen she is removed.
-            if (bottle.y < 500 && !col && bottle.splashCounter == 6) {
+            if (bottle.y &lt; 500 &amp;&amp; !col &amp;&amp; bottle.splashCounter == 6) {
                 bo.push(bottle);
             }
             else {
-                if (col || (bottle.splashCounter < 6 && bottle.splashCounter > 0)) {
+                if (col || (bottle.splashCounter &lt; 6 &amp;&amp; bottle.splashCounter > 0)) {
                     bottle.splashCounter--;
                     bo.push(bottle);
                 }
@@ -237,7 +265,7 @@ class World {
         this.gamestarted = false;
         this.gameOver.classList.remove('d-none');        
         this.buttonContainer.classList.add('d-none');
-        if (window.innerWidth <= 720) { this.explanation.classList.add('d-none'); }
+        if (window.innerWidth &lt;= 720) { this.explanation.classList.add('d-none'); }
         setTimeout(this.backToScreenFfromGameOver.bind(this), 3000);
     }
 
@@ -262,10 +290,10 @@ class World {
             let d = this.character.x - e.x;
             let dv = 500;
 
-            if ((d > dv / 2) || (d < -1 * dv)) {
+            if ((d > dv / 2) || (d &lt; -1 * dv)) {
                 e.playSound = false;
             }
-            if (d > (-1 * dv) && (d <= dv / 2)) {
+            if (d > (-1 * dv) &amp;&amp; (d &lt;= dv / 2)) {
                 e.playSound = true;
             }
         });
@@ -277,7 +305,7 @@ class World {
 
         this.level.enemies.forEach(e => {
             let d = (this.character.y + this.character.height - this.character.offset['bottom']) - e.y
-            if (this.character.isCollidingFromTop(e, d) && !e.jumpedOn && this.character.speedY <= 0) {
+            if (this.character.isCollidingFromTop(e, d) &amp;&amp; !e.jumpedOn &amp;&amp; this.character.speedY &lt;= 0) {
                 e.jumpedOn = true;
                 this.character.speedY = 30;
             }
@@ -306,7 +334,7 @@ class World {
                 if (!this.gameWin) {
                     this.handleRun();
                     //if the distance between endboss and char is less than 350 the boss attacs
-                    if (this.level.endboss.x - this.character.x < 350) {
+                    if (this.level.endboss.x - this.character.x &lt; 350) {
                         this.level.endboss.startFight = true;
                     }
                     //if the deadAnimation of the boss is over the game ends
@@ -372,7 +400,7 @@ class World {
     collectingBottles() {
         let bo = []
         this.bottlesInWorld.forEach(bottle => {
-            if (this.character.isColliding(bottle) && this.character.amountBottles < 5) {
+            if (this.character.isColliding(bottle) &amp;&amp; this.character.amountBottles &lt; 5) {
                 this.character.amountBottles++;
                 this.bottlebar.setPercentage(this.character.amountBottles * 20);
             }
@@ -388,7 +416,7 @@ class World {
     /**Handles, when we press button D. This creates a new ThrowableObject and throws it. */
     throwObjects() {
         let time= Date.now();
-        if (this.keyboard.D && this.character.amountBottles > 0 && (time - this.timeLast)>1000) {
+        if (this.keyboard.D &amp;&amp; this.character.amountBottles > 0 &amp;&amp; (time - this.timeLast)>1000) {
             this.timeLast = Date.now();
             let bottle = new ThrowableObject(this.character.x, this.character.y + 100);
             this.character.amountBottles--;
@@ -413,7 +441,7 @@ class World {
         let en = []
         let col = false;
         this.level.enemies.forEach((enemy) => {
-            if (bottle.isColliding(enemy) && !enemy.jumpedOn) {
+            if (bottle.isColliding(enemy) &amp;&amp; !enemy.jumpedOn) {
                 col = true;
                 enemy.closeSound();
 
@@ -421,7 +449,7 @@ class World {
                 en.push(enemy);
             }
         });
-        if (bottle.isColliding(this.level.endboss) && this.level.endboss.energy > 0 && bottle.splashCounter == 6) {
+        if (bottle.isColliding(this.level.endboss) &amp;&amp; this.level.endboss.energy > 0 &amp;&amp; bottle.splashCounter == 6) {
 
             this.handleBossCollision();
             col = true;
@@ -456,7 +484,7 @@ class World {
     checkCollisions() {
         let pain = false;
         this.level.enemies.forEach((enemy) => {
-            if ((this.character.isColliding(enemy) && !enemy.jumpedOn) || (this.character.isColliding(this.level.endboss) && this.level.endboss.energy > 0)) {
+            if ((this.character.isColliding(enemy) &amp;&amp; !enemy.jumpedOn) || (this.character.isColliding(this.level.endboss) &amp;&amp; this.level.endboss.energy > 0)) {
                 this.character.hit();
                 this.statusbar.setPercentage(this.character.energy);
                 pain = true
@@ -468,3 +496,26 @@ class World {
 
 }
 
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addTouchListeners">addTouchListeners</a></li><li><a href="global.html#blendInOutObjects">blendInOutObjects</a></li><li><a href="global.html#callInitFirstTime">callInitFirstTime</a></li><li><a href="global.html#closeFull">closeFull</a></li><li><a href="global.html#closeFullscreen">closeFullscreen</a></li><li><a href="global.html#enableSound">enableSound</a></li><li><a href="global.html#goFull">goFull</a></li><li><a href="global.html#goFullscreen">goFullscreen</a></li><li><a href="global.html#storeObjectsInVariables">storeObjectsInVariables</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Sep 09 2023 17:12:42 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
